@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Vitalis</string>
+    <string name="title_activity_chat_screen">ChatScreen</string>
 </resources>
