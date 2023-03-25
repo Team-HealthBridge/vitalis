@@ -5,22 +5,22 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.healthbridge.vitalis.R
 import com.healthbridge.vitalis.feature_bot.presentation.components.MessageInput
+import com.healthbridge.vitalis.feature_bot.presentation.components.UserMessageBubble
+import com.healthbridge.vitalis.feature_bot.presentation.components.createUserBubbles
 import com.healthbridge.vitalis.ui.theme.VitalisTheme
-import com.healthbridge.vitalis.ui.theme.md_theme_light_shadow
 
 class ChatScreen : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -28,6 +28,8 @@ class ChatScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            var userInput by remember { mutableStateOf("") }
+            var userMessages by remember { mutableStateOf(listOf<String>()) }
             VitalisTheme {
                 Scaffold(
                     topBar = {
@@ -53,11 +55,16 @@ class ChatScreen : ComponentActivity() {
                         )
                     },
                     ) {
-                    Column(
-                        modifier = Modifier.fillMaxHeight(),
-                        verticalArrangement = Arrangement.Bottom,
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.BottomEnd
                     ) {
-                        MessageInput()
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
+                            createUserBubbles(userMessages)
+                            userMessages = MessageInput()
+                        }
 
                     }
                 }
@@ -71,6 +78,9 @@ class ChatScreen : ComponentActivity() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun DefaultPreview2() {
+
+    var userInput by remember { mutableStateOf("") }
+
     VitalisTheme {
         Scaffold(
             topBar = {
@@ -80,7 +90,7 @@ fun DefaultPreview2() {
                             "Chat",
                             color = MaterialTheme.colorScheme.primary,
                         )
-                            },
+                    },
                     Modifier.background(color = MaterialTheme.colorScheme.tertiary),
                     navigationIcon = {
                         Icon(
@@ -95,11 +105,17 @@ fun DefaultPreview2() {
                     }
                 )
             },
-
+        ) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.BottomEnd
             ) {
-            Column {
-                Spacer(modifier = Modifier.height(100.dp))
-                MessageInput()
+                Column(
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    MessageInput()
+                }
 
             }
         }
