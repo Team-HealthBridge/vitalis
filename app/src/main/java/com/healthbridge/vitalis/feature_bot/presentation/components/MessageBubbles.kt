@@ -20,15 +20,16 @@ fun UserMessageBubble(message: String, modifier: Modifier = Modifier) {
             .background(
                 color = MaterialTheme.colorScheme.primaryContainer,
                 shape = MaterialTheme.shapes.medium
-            ).padding(8.dp)
+            )
+            .padding(8.dp)
 
     ) {
 
-            Text(
-                text = message,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.align(Alignment.End)
-            )
+        Text(
+            text = message,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            modifier = Modifier.align(Alignment.End)
+        )
     }
 }
 
@@ -49,7 +50,8 @@ fun BotMessageBubble(message: String, modifier: Modifier = Modifier) {
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
-                Text("10 min ago",
+                Text(
+                    "10 min ago",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.tertiary
                 )
@@ -77,27 +79,42 @@ fun BotMessageBubble(message: String, modifier: Modifier = Modifier) {
 }
 
 
-
 // Create Bubbles using a mutable list
 @Composable
 fun createUserBubbles(userMessages: List<String>) {
-    Column {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+    ) {
         for (message in userMessages) {
-            UserMessageBubble(message = message)
-            Spacer(modifier = Modifier.height(8.dp))
-            BotMessageBubble(message ="I'm still waiting to be set up")
-
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalAlignment = Alignment.End
+            ) {
+                UserMessageBubble(message = message)
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+                BotMessageBubble(message = "Hello, I'm Vitalis. I'm still waiting to be set up!! ")
+                Spacer(modifier = Modifier.height(8.dp))
+            }
         }
     }
 }
 
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun UserMessageBubblePreview() {
-    Column() {
-        UserMessageBubble(message = "I have been having a headache for the past 3 days.")
-        Spacer(modifier = Modifier.height(8.dp))
-        BotMessageBubble(message = "I'm still waiting to be set up")
+    Column {
+        createUserBubbles(userMessages = listOf("Hello", "How are you?", "I'm fine thanks"))
     }
 }
