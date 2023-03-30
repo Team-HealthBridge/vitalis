@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,11 +19,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.healthbridge.vitalis.R
 import com.healthbridge.vitalis.feature_bot.presentation.components.MessageInput
-import com.healthbridge.vitalis.feature_bot.presentation.components.UserMessageBubble
-import com.healthbridge.vitalis.feature_bot.presentation.components.createUserBubbles
+import com.healthbridge.vitalis.feature_bot.presentation.viewmodels.ChatViewModel
 import com.healthbridge.vitalis.ui.theme.VitalisTheme
+import com.healthbridge.vitalis.util.Constants
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class ChatScreen : ComponentActivity() {
+
+    private val chatViewModel: ChatViewModel by viewModels()
+
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +37,11 @@ class ChatScreen : ComponentActivity() {
         setContent {
             var userInput by remember { mutableStateOf("") }
             var userMessages by remember { mutableStateOf(listOf<String>()) }
+
+//            chatViewModel.getToken()
+            print(Constants.TOKEN)
+            chatViewModel.startConversation()
+
             VitalisTheme {
                 Scaffold(
                     topBar = {
@@ -62,8 +74,9 @@ class ChatScreen : ComponentActivity() {
                         Column(
                             verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
-                            createUserBubbles(userMessages)
-                            userMessages = MessageInput()
+                            MessageInput()
+                           val id = chatViewModel.sendUserInput("Symptoms")
+                            print(id)
                         }
 
                     }
