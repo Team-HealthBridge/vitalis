@@ -35,7 +35,7 @@ fun UserMessageBubble(message: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun BotMessageBubble(message: String, modifier: Modifier = Modifier) {
-    Row() {
+    Row {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
                 painter = painterResource(id = R.drawable.ic_launcher),
@@ -81,7 +81,7 @@ fun BotMessageBubble(message: String, modifier: Modifier = Modifier) {
 
 // Create Bubbles using a mutable list
 @Composable
-fun createUserBubbles(userMessages: List<String>) {
+fun CreateMessageBubbles(userMessages: List<String>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -115,6 +115,6 @@ fun createUserBubbles(userMessages: List<String>) {
 @Composable
 fun UserMessageBubblePreview() {
     Column {
-        createUserBubbles(userMessages = listOf("Hello", "How are you?", "I'm fine thanks"))
+        CreateMessageBubbles(userMessages = listOf("Hello", "How are you?", "I'm fine thanks"))
     }
 }
