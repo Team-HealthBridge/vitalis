@@ -12,35 +12,38 @@ import retrofit2.http.*
 
 interface ApiService{
 
-    val token: String
-        get() = Constants.TOKEN
 
     // GET TOKEN
     @POST("/v3/directline/tokens/generate")
     suspend fun getToken(
+        @Header ("Authorization") token: String,
         @Body requestToken: RequestToken,
     ): Token
 
     // REFRESH TOKEN
     @POST("/v3/directline/tokens/refresh")
     suspend fun refreshToken(
+        @Header("Authorization") token: String
     ): Token
 
 
     // START CONVERSATION
     @POST("/v3/directline/conversations")
     suspend fun startConversation(
+        @Header("Authorization") token: String
     ): StartConverstion
 
     // SEND ACTIVITY
     @POST("/v3/directline/conversations/{conversationId}/activities")
     suspend fun sendActivity(
+        @Header("Authorization") token: String,
         @Path("conversationId") conversationId: String,
         @Body userActivity: UserActivity): SendActivity
 
     // RECEIVE ACTIVITIES
     @GET("/v3/directline/conversations/{conversationId}/activities")
     suspend fun receiveActivities(
-        @Path("conversationId") conversationId: String): Flow<List<ReceiveActivities>>
+        @Header("Authorization") token: String,
+        @Path("conversationId") conversationId: String): ReceiveActivities
 
 }
