@@ -3,15 +3,24 @@ package com.healthbridge.vitalis.feature_bot.presentation.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.healthbridge.vitalis.R
+import com.healthbridge.vitalis.feature_bot.data.remote.responses.*
+import java.time.Instant
+import java.time.format.DateTimeFormatter
+
 
 @Composable
 fun UserMessageBubble(message: String, modifier: Modifier = Modifier) {
@@ -34,7 +43,7 @@ fun UserMessageBubble(message: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun BotMessageBubble(message: String, modifier: Modifier = Modifier) {
+fun BotMessageBubble(message: String, modifier: Modifier = Modifier, time: String) {
     Row {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
@@ -51,7 +60,7 @@ fun BotMessageBubble(message: String, modifier: Modifier = Modifier) {
                     color = MaterialTheme.colorScheme.primary
                 )
                 Text(
-                    "10 min ago",
+                    calculateTimeDifference(time),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.tertiary
                 )
@@ -64,7 +73,7 @@ fun BotMessageBubble(message: String, modifier: Modifier = Modifier) {
                 color = MaterialTheme.colorScheme.secondary,
                 shape = MaterialTheme.shapes.medium
             )
-            .height(48.dp)
+            .wrapContentHeight()
     ) {
         Column(
             modifier = Modifier
@@ -81,40 +90,226 @@ fun BotMessageBubble(message: String, modifier: Modifier = Modifier) {
 
 // Create Bubbles using a mutable list
 @Composable
-fun CreateMessageBubbles(userMessages: List<String>) {
+fun CreateMessageBubbles(activities: List<Activity>, choices: List<String>) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        content = {
+            items(activities.size) { index ->
+                if (activities[index].from.name != "vitalis") {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                        horizontalAlignment = Alignment.End
+                    ) {
+                        UserMessageBubble(message = activities[index].text)
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+
+                } else {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        BotMessageBubble(
+                            message = activities[index].text,
+                            time = activities[index].timestamp
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        if(activities[index].attachments.isNotEmpty()){
+                            BotDialogBox(choices)
+                        }
+                    }
+                }
+            }
+        }
+    )
+}
+
+
+
+fun calculateTimeDifference(time: String): String {
+    val milliseconds = getMillisecondsFromTimestamp(time)
+    val timeDifference = System.currentTimeMillis() - milliseconds
+    val seconds = timeDifference / 1000
+    val minutes = seconds / 60
+    val hours = minutes / 60
+    val days = hours / 24
+    val weeks = days / 7
+    val months = days / 30
+    val years = days / 365
+
+    return when {
+        seconds < 60 -> {
+            "$seconds seconds ago"
+        }
+        minutes < 60 -> {
+            "$minutes minutes ago"
+        }
+        hours < 24 -> {
+            "$hours hours ago"
+        }
+        days < 7 -> {
+            "$days days ago"
+        }
+        weeks < 4 -> {
+            "$weeks weeks ago"
+        }
+        months < 12 -> {
+            "$months months ago"
+        }
+        else -> {
+            "$years years ago"
+        }
+    }
+}
+
+fun getMillisecondsFromTimestamp(timestamp: String): Long {
+    val instant = Instant.parse(timestamp)
+    return instant.toEpochMilli()
+}
+
+
+@Composable
+fun BotDialogBox(options: List<String>){
+    Column(
+            modifier = Modifier
+                .background(
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    shape = MaterialTheme.shapes.extraLarge
+                )
+                .padding(8.dp)
+        ) {
+            Text(
+                text = "How can I help you?",
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
+            Text(
+                text = "Below is a set options of what I can assist you with. Please select one to continue.",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
+            listOptions(options)
+            Button(
+                onClick = { /*TODO*/ },
+                modifier = Modifier
+                    .padding(8.dp)
+                    .align(Alignment.End)
+            ) {
+                Text(text = "Submit")
+            }
+
+        }
+}
+
+
+@Composable
+fun listOptions(list: List<String>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
-    ) {
-        for (message in userMessages) {
-            Column(
+
+    ){
+        list.forEachIndexed { index, item ->
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
-                horizontalAlignment = Alignment.End
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                UserMessageBubble(message = message)
-                Spacer(modifier = Modifier.height(8.dp))
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                horizontalAlignment = Alignment.Start
-            ) {
-                BotMessageBubble(message = "Hello, I'm Vitalis. I'm still waiting to be set up!! ")
-                Spacer(modifier = Modifier.height(8.dp))
+                var purple = MaterialTheme.colorScheme.primaryContainer
+                var selected: Boolean = false
+                Text(
+                    text = "${index + 1}",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .drawBehind {
+                            drawCircle(
+                                color = purple,
+                                radius = this.size.maxDimension
+                            )
+                        },
+                )
+                Text(
+                    text = item,
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+                RadioButton(selected = selected, onClick = {
+                    // Change the color of the circle
+                    selected = !selected
+                    println(selected)
+
+                })
             }
         }
     }
 }
 
 
+
+
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun UserMessageBubblePreview() {
     Column {
-        CreateMessageBubbles(userMessages = listOf("Hello", "How are you?", "I'm fine thanks"))
+        var activity1: Activity = Activity(
+            id = "JNw2QqsiUMB4O7bP4unFkL-fr|0000000",
+            timestamp = "2023-03-31T13:21:29.1794343Z",
+            serviceUrl = "https://directline.botframework.com/",
+            channelId = "directline",
+            conversation = Conversation(id = "JNw2QqsiUMB4O7bP4unFkL-fr" ),
+            type = "message",
+            text = "Hello",
+            from = From(id = "user2", name = "user2"),
+            attachments = listOf(),
+            inputHint = "acceptingInput",
+            speak = "Hello", 
+            replyToId = "JNw2QqsiUMB4O7bP4unFkL-fr|0000000",
+            locale = "en-US",
+            suggestedActions = SuggestedActions(actions = listOf())
+        )
+        
+        var button1 = Button(title = "Symptoms", type = "imBack", value = "Symptoms")
+        var button2 = Button(title = "Treatments", type = "imBack", value = "Treatments")
+        var button3 = Button(title = "Healthy Habits", type = "imBack", value = "Healthy Habits")
+        var content = Content(
+            buttons = listOf(button1, button2, button3),
+        )
+        
+        var attachment = Attachment(
+            contentType = "application/vnd.microsoft.card.hero",
+            content = content
+        )
+
+        var choices = listOf("Symptoms", "Treatments", "Healthy Habits")
+        
+        var activity2 = Activity(
+            type = "message",
+            id = "JNw2QqsiUMB4O7bP4unFkL-fr|0000001",
+            timestamp = "2023-03-31T13:21:29.1794343Z",
+            channelId = "directline",
+            from = From(id = "vitalis-bcgiqah", name = "vitalis"),
+            conversation = Conversation(id = "JNw2QqsiUMB4O7bP4unFkL-fr"),
+            locale = "en-US",
+            text = "Hello! I'm Vitalis, your personal health bot. I'm here to help answer your basic health questions and provide you with information on a wide range of topics. Whether you have questions about symptoms, treatments, or healthy habits, I'm here to assist you. Let's get started!",
+            speak = "Hello! I'm Vitalis, your personal health bot. I'm here to help answer your basic health questions and provide you with information on a wide range of topics. Whether you have questions about symptoms, treatments, or healthy habits, I'm here to assist you. Let's get started!",
+            inputHint = "acceptingInput",
+            attachments = listOf(attachment),
+            replyToId = "JNw2QqsiUMB4O7bP4unFkL-fr|0000000",
+            serviceUrl = "",
+            suggestedActions = SuggestedActions(actions = listOf())
+        )
+        CreateMessageBubbles(activities = listOf(activity1, activity2), choices = choices)
     }
 }

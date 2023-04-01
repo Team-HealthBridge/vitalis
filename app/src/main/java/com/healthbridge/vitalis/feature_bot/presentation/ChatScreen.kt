@@ -19,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.healthbridge.vitalis.R
+import com.healthbridge.vitalis.feature_bot.presentation.components.CreateMessageBubbles
 import com.healthbridge.vitalis.feature_bot.presentation.components.MessageInput
 import com.healthbridge.vitalis.feature_bot.presentation.viewmodels.ChatViewModel
 import com.healthbridge.vitalis.ui.theme.VitalisTheme
@@ -68,12 +69,14 @@ class ChatScreen : ComponentActivity() {
                         Column(
                             verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
-                            MessageInput(chatViewModel::sendUserInput)
-                           val activities = chatViewModel.botResponse.value
-                            activities.forEach {
-                                Text(text = it.text)
+                            Column() {
+                                val activities = chatViewModel.botResponse.value
+                                val options = chatViewModel.botChoices.value
+                                CreateMessageBubbles(activities = activities, choices = options)
                             }
+                            MessageInput(chatViewModel::sendUserInput)
                         }
+
 
                     }
                 }

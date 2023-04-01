@@ -24,6 +24,7 @@ class ChatViewModel @Inject constructor(private val chatRepository: ChatReposito
 
 
     val botResponse: MutableState<List<Activity>> = chatRepository.activityState
+    val botChoices: MutableState<List<String>> = chatRepository.choicesState
 
     fun sendUserInput(input: String) {
         viewModelScope.launch {

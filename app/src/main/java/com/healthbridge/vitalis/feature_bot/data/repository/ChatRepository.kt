@@ -14,6 +14,7 @@ import javax.inject.Inject
 class ChatRepository @Inject constructor(private val api: ApiService) {
 
     val activityState:MutableState<List<Activity>> = mutableStateOf(emptyList())
+    var choicesState:MutableState<List<String>> = mutableStateOf(emptyList())
 
     lateinit var conversationId:String
     private var token:String? = null
@@ -50,6 +51,7 @@ class ChatRepository @Inject constructor(private val api: ApiService) {
     suspend fun receiveActivities() {
        val activities = api.receiveActivities(getToken(), conversationId)
         activityState.value = activities.activities
+        choicesState.value = activities.activities.last().attachments.first().content.buttons.map { it.title}
     }
 
 }
