@@ -9,7 +9,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -22,16 +23,13 @@ import com.healthbridge.vitalis.R
 
 
 @Composable
-fun MessageInput(
-    modifier: Modifier = Modifier,
-):List<String> {
+fun MessageInput(onSend: (String) -> Unit) {
 
-    var value = rememberSaveable { mutableStateOf("") }
-    val context = LocalContext.current.applicationContext
+    val value = rememberSaveable { mutableStateOf("") }
+    LocalContext.current.applicationContext
 
     val focusManager = LocalFocusManager.current
 
-    var messages by remember { mutableStateOf(listOf<String>()) }
 
     TextField(
         value = value.value,
@@ -43,8 +41,7 @@ fun MessageInput(
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Send),
         keyboardActions = KeyboardActions(onSend = {
             focusManager.clearFocus()
-            messages = messages.plus(value.value)
-
+            onSend(value.value)
             value.value = ""
 
         }),
@@ -66,8 +63,6 @@ fun MessageInput(
             .shadow(elevation = 8.dp, shape = MaterialTheme.shapes.small, clip = true)
 
     )
-
-    return messages
 }
 
 
