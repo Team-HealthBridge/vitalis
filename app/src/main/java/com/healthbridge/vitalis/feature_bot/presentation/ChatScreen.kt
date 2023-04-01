@@ -2,6 +2,7 @@ package com.healthbridge.vitalis.feature_bot.presentation
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -21,7 +22,6 @@ import com.healthbridge.vitalis.R
 import com.healthbridge.vitalis.feature_bot.presentation.components.MessageInput
 import com.healthbridge.vitalis.feature_bot.presentation.viewmodels.ChatViewModel
 import com.healthbridge.vitalis.ui.theme.VitalisTheme
-import com.healthbridge.vitalis.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -35,12 +35,6 @@ class ChatScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            var userInput by remember { mutableStateOf("") }
-            var userMessages by remember { mutableStateOf(listOf<String>()) }
-
-//            chatViewModel.getToken()
-            print(Constants.TOKEN)
-            chatViewModel.startConversation()
 
             VitalisTheme {
                 Scaffold(
@@ -74,9 +68,11 @@ class ChatScreen : ComponentActivity() {
                         Column(
                             verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
-                            MessageInput()
-                           val id = chatViewModel.sendUserInput("Symptoms")
-                            print(id)
+                            MessageInput(chatViewModel::sendUserInput)
+                           val activities = chatViewModel.botResponse.value
+                            activities.forEach {
+                                Text(text = it.text)
+                            }
                         }
 
                     }
@@ -92,7 +88,6 @@ class ChatScreen : ComponentActivity() {
 @Composable
 fun DefaultPreview2() {
 
-    var userInput by remember { mutableStateOf("") }
 
     VitalisTheme {
         Scaffold(
@@ -127,7 +122,7 @@ fun DefaultPreview2() {
                     horizontalAlignment = Alignment.End,
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    MessageInput()
+
                 }
 
             }
