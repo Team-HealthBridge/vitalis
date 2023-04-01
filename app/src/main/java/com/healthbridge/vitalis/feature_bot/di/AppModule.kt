@@ -32,13 +32,6 @@ object AppModule {
     fun providesOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
-            .addInterceptor { chain ->
-                val original: Request = chain.request().newBuilder()
-                    .addHeader("Authorization", TOKEN)
-                    .build()
-
-                chain.proceed(original)
-            }
             .callTimeout(15, TimeUnit.SECONDS)
             .connectTimeout(15, TimeUnit.SECONDS)
             .writeTimeout(15, TimeUnit.SECONDS)
