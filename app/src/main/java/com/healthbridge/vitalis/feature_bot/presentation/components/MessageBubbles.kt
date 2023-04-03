@@ -4,22 +4,22 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.healthbridge.vitalis.R
 import com.healthbridge.vitalis.feature_bot.data.remote.responses.*
 import java.time.Instant
-import java.time.format.DateTimeFormatter
 
 
 @Composable
@@ -121,8 +121,10 @@ fun CreateMessageBubbles(activities: List<Activity>, choices: List<String>) {
                             time = activities[index].timestamp
                         )
                         Spacer(modifier = Modifier.height(8.dp))
-                        if(activities[index].attachments.isNotEmpty()){
-                            BotDialogBox(choices)
+                        if(activities[index].attachments != null){
+                            if(activities[index].attachments.isNotEmpty()) {
+                                BotDialogBox(choices)
+                            }
                         }
                     }
                 }
@@ -200,21 +202,13 @@ fun BotDialogBox(options: List<String>){
                     .align(Alignment.CenterHorizontally)
             )
             listOptions(options)
-            Button(
-                onClick = { /*TODO*/ },
-                modifier = Modifier
-                    .padding(8.dp)
-                    .align(Alignment.End)
-            ) {
-                Text(text = "Submit")
-            }
-
         }
 }
 
 
 @Composable
 fun listOptions(list: List<String>) {
+    val (selectedOption, onOptionSelected) = remember { mutableStateOf(list[0]) }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -222,14 +216,23 @@ fun listOptions(list: List<String>) {
 
     ){
         list.forEachIndexed { index, item ->
+            var state by remember { mutableStateOf(false) }
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp),
+                    .padding(8.dp)
+                    .selectable(
+                        selected = (item == selectedOption),
+                        onClick = {
+                            onOptionSelected(item)
+                            println("Row selected is: $item")
+                                  },
+                        role = Role.RadioButton
+                    )
+                ,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 var purple = MaterialTheme.colorScheme.primaryContainer
-                var selected: Boolean = false
                 Text(
                     text = "${index + 1}",
                     style = MaterialTheme.typography.titleMedium,
@@ -246,13 +249,19 @@ fun listOptions(list: List<String>) {
                     text = item,
                     style = MaterialTheme.typography.bodyLarge,
                 )
-                RadioButton(selected = selected, onClick = {
-                    // Change the color of the circle
-                    selected = !selected
-                    println(selected)
-
+                RadioButton(selected = (item == selectedOption), onClick = {
+                    onOptionSelected(item)
+                    println("Radio button selected is: $item")
                 })
             }
+        }
+        Button(
+            onClick = { /*TODO*/ },
+            modifier = Modifier
+                .padding(8.dp)
+                .align(Alignment.End)
+        ) {
+            Text(text = "Submit")
         }
     }
 }
@@ -278,14 +287,21 @@ fun UserMessageBubblePreview() {
             speak = "Hello", 
             replyToId = "JNw2QqsiUMB4O7bP4unFkL-fr|0000000",
             locale = "en-US",
-            suggestedActions = SuggestedActions(actions = listOf())
+            channelData = ChannelData(submitChoicesButtonText = "Submit"),
         )
+
+
         
         var button1 = Button(title = "Symptoms", type = "imBack", value = "Symptoms")
         var button2 = Button(title = "Treatments", type = "imBack", value = "Treatments")
         var button3 = Button(title = "Healthy Habits", type = "imBack", value = "Healthy Habits")
         var content = Content(
+            `$schema` = "http://adaptivecards.io/schemas/adaptive-card.json",
             buttons = listOf(button1, button2, button3),
+            actions = listOf(),
+            body = listOf(),
+            type = "AdaptiveCard",
+            version = "1.0",
         )
         
         var attachment = Attachment(
@@ -309,7 +325,7 @@ fun UserMessageBubblePreview() {
             attachments = listOf(attachment),
             replyToId = "JNw2QqsiUMB4O7bP4unFkL-fr|0000000",
             serviceUrl = "",
-            suggestedActions = SuggestedActions(actions = listOf())
+            channelData = ChannelData(submitChoicesButtonText = "Submit"),
         )
         CreateMessageBubbles(activities = listOf(activity1, activity2), choices = choices)
     }
