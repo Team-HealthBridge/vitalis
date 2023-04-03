@@ -51,7 +51,15 @@ class ChatRepository @Inject constructor(private val api: ApiService) {
     suspend fun receiveActivities() {
        val activities = api.receiveActivities(getToken(), conversationId)
         activityState.value = activities.activities
-        choicesState.value = activities.activities.last().attachments.first().content.buttons.map { it.title}
+        if (activities.activities.last().attachments != null) {
+           if(activities.activities.last().attachments[0].contentType == "application/vnd.microsoft.card.hero") {
+               choicesState.value = activities.activities.last().attachments.first().content.buttons.map { it.title}
+           } else if (activities.activities.last().attachments[0].contentType == "application/vnd.microsoft.card.adaptive") {
+               choicesState.value = activities.activities.last().attachments[0].content.body[0].items.map { it.choices.map { it.title } }.flatten()
+           }
+        } else {
+            choicesState.value = emptyList()
+        }
     }
 
 }
