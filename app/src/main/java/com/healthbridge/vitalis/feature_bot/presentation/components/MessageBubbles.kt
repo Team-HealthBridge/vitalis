@@ -94,6 +94,7 @@ fun CreateMessageBubbles(activities: List<Activity>, choices: List<String>) {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
+            .fillMaxHeight(0.8f)
             .padding(8.dp),
         content = {
             items(activities.size) { index ->

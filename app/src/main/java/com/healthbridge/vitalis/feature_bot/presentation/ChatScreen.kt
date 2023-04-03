@@ -7,10 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -69,7 +66,7 @@ class ChatScreen : ComponentActivity() {
                         Column(
                             verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
-                            Column() {
+                            Column {
                                 val activities = chatViewModel.botResponse.value
                                 val options = chatViewModel.botChoices.value
                                 CreateMessageBubbles(activities = activities, choices = options)
