@@ -6,8 +6,6 @@ import com.healthbridge.vitalis.feature_bot.data.remote.responses.ReceiveActivit
 import com.healthbridge.vitalis.feature_bot.data.remote.responses.SendActivity
 import com.healthbridge.vitalis.feature_bot.data.remote.responses.StartConverstion
 import com.healthbridge.vitalis.feature_bot.data.remote.responses.Token
-import com.healthbridge.vitalis.util.Constants
-import kotlinx.coroutines.flow.Flow
 import retrofit2.http.*
 
 interface ApiService{

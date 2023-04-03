@@ -2,20 +2,11 @@ package com.healthbridge.vitalis.feature_bot.presentation.viewmodels
 
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.*
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.viewmodel.CreationExtras
-import com.healthbridge.vitalis.feature_bot.data.remote.model.RequestToken
-import com.healthbridge.vitalis.feature_bot.data.remote.model.User
 import com.healthbridge.vitalis.feature_bot.data.remote.model.UserActivity
 import com.healthbridge.vitalis.feature_bot.data.remote.model.UserFrom
 import com.healthbridge.vitalis.feature_bot.data.remote.responses.Activity
-import com.healthbridge.vitalis.feature_bot.data.remote.responses.ReceiveActivities
 import com.healthbridge.vitalis.feature_bot.data.repository.ChatRepository
-import com.healthbridge.vitalis.feature_bot.di.AppModule
-import com.healthbridge.vitalis.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
