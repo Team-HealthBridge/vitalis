@@ -23,7 +23,7 @@
             android:theme="@style/Theme.Vitalis">
         </activity>
         <activity
-            android:name=".feature_home.presentation.components.MainActivity"
+            android:name=".feature_home.presentation.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Vitalis">
