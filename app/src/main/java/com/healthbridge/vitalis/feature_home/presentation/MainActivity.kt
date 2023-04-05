@@ -6,9 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.*
@@ -17,7 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.relay.compose.BoxScopeInstanceImpl.align
 import com.healthbridge.vitalis.R
+import com.healthbridge.vitalis.commons.components.Navigation
 import com.healthbridge.vitalis.feature_home.presentation.components.HealthBits
 import com.healthbridge.vitalis.ui.theme.VitalisTheme
 
@@ -106,17 +106,21 @@ fun DefaultPreview() {
                 FloatingActionButton(
                     onClick = { /* fab click handler */ }
                 ) {
-                    Image(painter = painterResource(id = R.drawable.ic_launcher), contentDescription = "" )
+                    Image(painter = painterResource(id = R.drawable.chatwidget), contentDescription = "" )
                 }
             },
 
         ) {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-            ){
-                items(10) {
-                    HealthBits()
+            Column {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier.fillMaxHeight(0.8f)
+                ) {
+                    items(10) {
+                        HealthBits()
+                    }
                 }
+                Navigation()
             }
         }
     }
