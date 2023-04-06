@@ -17,11 +17,15 @@
         android:theme="@style/Theme.Vitalis"
         tools:targetApi="31">
         <activity
+            android:name=".feature_communities.presentation.CommunitiesScreen"
+            android:exported="false"
+            android:label="@string/title_activity_communities_screen"
+            android:theme="@style/Theme.Vitalis" />
+        <activity
             android:name=".feature_bot.presentation.ChatScreen"
             android:exported="true"
             android:label="@string/title_activity_chat_screen"
-            android:theme="@style/Theme.Vitalis">
-        </activity>
+            android:theme="@style/Theme.Vitalis"/>
         <activity
             android:name=".feature_home.presentation.MainActivity"
             android:exported="true"
