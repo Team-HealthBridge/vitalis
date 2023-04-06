@@ -12,7 +12,6 @@ import androidx.compose.ui.unit.dp
 import com.healthbridge.vitalis.R
 
 
-
 @Preview(showBackground = true)
 @Composable
 fun Navigation() {
@@ -23,25 +22,26 @@ fun Navigation() {
         R.drawable.communities,
         R.drawable.files
     )
-   NavigationBar(
-       containerColor = MaterialTheme.colorScheme.surface,
-   ) {
-       items.forEachIndexed { index, item ->
-           NavigationBarItem(
-               icon = {
-                   Icon(
-                       painter = painterResource(id = icons[index]),
-                       contentDescription = null
-                   )
-               },
-               label = { Text(item, color = MaterialTheme.colorScheme.primary) },
-               selected = selectedTab == index,
-               onClick = { setSelectedTab(index) },
-               modifier = Modifier.padding(8.dp)
-           )
-       }
+    NavigationBar(
+        containerColor = MaterialTheme.colorScheme.surface,
+    ) {
+        items.forEachIndexed { index, item ->
+            NavigationBarItem(
+                icon = {
+                    Icon(
+                        painter = painterResource(id = icons[index]),
+                        contentDescription = null,
+                        modifier = Modifier.padding(bottom = 20.dp)
+                    )
+                },
+                label = { Text(item, color = MaterialTheme.colorScheme.primary) },
+                selected = selectedTab == index,
+                onClick = { setSelectedTab(index) },
+                modifier = Modifier.padding(8.dp)
+            )
+        }
 
-   }
+    }
 
 
 }
