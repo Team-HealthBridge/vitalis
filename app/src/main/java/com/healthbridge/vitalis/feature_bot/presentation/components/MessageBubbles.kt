@@ -248,6 +248,7 @@ fun listOptions(list: List<String>) {
                 Text(
                     text = item,
                     style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.align(Alignment.CenterVertically)
                 )
                 RadioButton(selected = (item == selectedOption), onClick = {
                     onOptionSelected(item)
