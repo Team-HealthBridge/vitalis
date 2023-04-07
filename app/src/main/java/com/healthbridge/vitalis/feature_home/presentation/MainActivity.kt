@@ -10,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -59,18 +60,17 @@ class MainActivity : ComponentActivity() {
                     },
                     floatingActionButton = {
                         FloatingActionButton(
-                            onClick = {
-                                startActivity(Intent(this, ChatScreen::class.java))
+                            onClick = { 
+                            startActivity(Intent(this, ChatScreen::class.java))
                             } ,
-                            modifier = Modifier
-                                .size(100.dp)
-                                .padding(bottom = 40.dp),
+                            shape = CircleShape, // this makes the button round
+
                         ) {
                             Image(
                                 painter = painterResource(id = R.drawable.chatwidget),
                                 contentDescription = "",
                                 modifier = Modifier
-                                    .size(80.dp)
+                                    .size(50.dp)
                             )
                         }
                     },
@@ -92,7 +92,7 @@ class MainActivity : ComponentActivity() {
                                     .fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             )  {
-                                Text(text = "Health Bits", modifier = Modifier.padding(20.dp), style = MaterialTheme.typography.headlineSmall)
+                                Text(text = "Health Bits", modifier = Modifier.padding(10.dp), style = MaterialTheme.typography.headlineSmall)
                                 OutlinedButton(
                                     onClick = { /*TODO*/ },
                                     modifier = Modifier.align(Alignment.CenterVertically),
@@ -104,10 +104,13 @@ class MainActivity : ComponentActivity() {
                         Column {
                             LazyVerticalGrid(
                                 columns = GridCells.Fixed(2),
+                                contentPadding = PaddingValues(10.dp), // this adds padding around the whole grid
                                 modifier = Modifier.fillMaxHeight(0.9f)
                             ) {
                                 items(10) {
-                                    HealthBits()
+                                    Box(modifier = Modifier.padding(10.dp)) { // this adds padding around each item
+                                        HealthBits()
+                                    }
                                 }
                             }
                         }
@@ -152,15 +155,13 @@ class MainActivity : ComponentActivity() {
                 floatingActionButton = {
                     FloatingActionButton(
                         onClick = { /* fab click handler */ } ,
-                        modifier = Modifier
-                            .size(100.dp)
-                            .padding(bottom = 40.dp),
+                        shape = CircleShape, // this makes the button round
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.chatwidget),
                             contentDescription = "",
                             modifier = Modifier
-                                .size(80.dp)
+                                .size(50.dp)
                         )
                     }
                 },
@@ -194,10 +195,13 @@ class MainActivity : ComponentActivity() {
                     Column {
                         LazyVerticalGrid(
                             columns = GridCells.Fixed(2),
+                            contentPadding = PaddingValues(10.dp), // this adds padding around the whole grid
                             modifier = Modifier.fillMaxHeight(0.9f)
                         ) {
                             items(10) {
-                                HealthBits()
+                                Box(modifier = Modifier.padding(10.dp)) { // this adds padding around each item
+                                    HealthBits()
+                                }
                             }
                         }
                     }
