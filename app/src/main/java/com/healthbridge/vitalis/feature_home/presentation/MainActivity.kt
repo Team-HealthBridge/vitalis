@@ -60,9 +60,9 @@ class MainActivity : ComponentActivity() {
                     },
                     floatingActionButton = {
                         FloatingActionButton(
-                            onClick = { 
-                            startActivity(Intent(this, ChatScreen::class.java))
-                            } ,
+                            onClick = {
+                                startActivity(Intent(this, ChatScreen::class.java))
+                            },
                             shape = CircleShape, // this makes the button round
 
                         ) {
@@ -80,19 +80,23 @@ class MainActivity : ComponentActivity() {
 
                     ) {
 
-                    Column{
+                    Column {
                         Column(
                             modifier = Modifier
                                 .paddingFromBaseline(top = 100.dp)
                                 .padding(horizontal = 20.dp)
                         ) {
-                            InformationCard( modifier = Modifier.align(Alignment.CenterHorizontally))
+                            InformationCard(modifier = Modifier.align(Alignment.CenterHorizontally))
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
-                            )  {
-                                Text(text = "Health Bits", modifier = Modifier.padding(10.dp), style = MaterialTheme.typography.headlineSmall)
+                            ) {
+                                Text(
+                                    text = "Health Bits",
+                                    modifier = Modifier.padding(10.dp),
+                                    style = MaterialTheme.typography.headlineSmall
+                                )
                                 OutlinedButton(
                                     onClick = { /*TODO*/ },
                                     modifier = Modifier.align(Alignment.CenterVertically),
@@ -154,7 +158,7 @@ class MainActivity : ComponentActivity() {
                 },
                 floatingActionButton = {
                     FloatingActionButton(
-                        onClick = { /* fab click handler */ } ,
+                        onClick = { /* fab click handler */ },
                         shape = CircleShape, // this makes the button round
                     ) {
                         Image(
@@ -171,19 +175,23 @@ class MainActivity : ComponentActivity() {
 
                 ) {
 
-                Column{
+                Column {
                     Column(
                         modifier = Modifier
                             .paddingFromBaseline(top = 100.dp)
                             .padding(horizontal = 20.dp)
                     ) {
-                        InformationCard( modifier = Modifier.align(Alignment.CenterHorizontally))
+                        InformationCard(modifier = Modifier.align(Alignment.CenterHorizontally))
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
-                        )  {
-                            Text(text = "Health Bits", modifier = Modifier.padding(20.dp), style = MaterialTheme.typography.headlineSmall)
+                        ) {
+                            Text(
+                                text = "Health Bits",
+                                modifier = Modifier.padding(20.dp),
+                                style = MaterialTheme.typography.headlineSmall
+                            )
                             OutlinedButton(
                                 onClick = { /*TODO*/ },
                                 modifier = Modifier.align(Alignment.CenterVertically),
