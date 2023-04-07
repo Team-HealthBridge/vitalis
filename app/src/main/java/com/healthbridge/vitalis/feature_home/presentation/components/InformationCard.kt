@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -21,12 +22,13 @@ fun InformationCard(modifier: Modifier) {
         onClick = { /* Do something */ },
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight()
+            .height(100.dp)
     ) {
         Row {
             Image(
                 painter = painterResource(id = R.drawable.healthimage),
                 contentDescription = null,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth(0.3f)
                     .height(100.dp)
@@ -40,7 +42,7 @@ fun InformationCard(modifier: Modifier) {
                     text = "All your health information in one place!",
                     style = MaterialTheme.typography.labelSmall
                 )
-                Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text = "See More...",
                     style = MaterialTheme.typography.bodySmall,
