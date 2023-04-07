@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "843382252391",
+    "project_id": "vitalis-a4159",
+    "storage_bucket": "vitalis-a4159.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:843382252391:android:0d22e501032862217c85c2",
+        "android_client_info": {
+          "package_name": "com.healthbridge.vitalis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "843382252391-ca91b883ntf1hurnl6c6lloqdqng2p16.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.healthbridge.vitalis",
+            "certificate_hash": "ef1b84a6097d627cef7b70d808017ee69472b02a"
+          }
+        },
+        {
+          "client_id": "843382252391-c1iu0t3l6754g6bijgot3qa7knpqmulk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDztLKS3ljZAaKZow8rXsbrcU-EbhpaTMc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "843382252391-c1iu0t3l6754g6bijgot3qa7knpqmulk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
