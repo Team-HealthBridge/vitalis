@@ -17,10 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.rememberNavController
 import com.healthbridge.vitalis.R
 import com.healthbridge.vitalis.commons.components.Navigation
-import com.healthbridge.vitalis.commons.navigation.BottomNavGraph
 import com.healthbridge.vitalis.feature_bot.presentation.ChatScreen
 import com.healthbridge.vitalis.feature_home.presentation.components.HealthBits
 import com.healthbridge.vitalis.feature_home.presentation.components.InformationCard
@@ -32,9 +30,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
-            val navController = rememberNavController()
-
             VitalisTheme {
                 Scaffold(
                     topBar = {
@@ -80,11 +75,10 @@ class MainActivity : ComponentActivity() {
                         }
                     },
                     bottomBar = {
-                        Navigation(navController = navController)
+                        Navigation()
                     },
 
                     ) {
-                    BottomNavGraph(navController = navController)
 
                     Column{
                         Column(
@@ -128,9 +122,6 @@ class MainActivity : ComponentActivity() {
     @Preview(showBackground = true)
     @Composable
     fun DefaultPreview() {
-
-        val navController = rememberNavController()
-
         VitalisTheme {
             Scaffold(
                 topBar = {
@@ -174,7 +165,7 @@ class MainActivity : ComponentActivity() {
                     }
                 },
                 bottomBar = {
-                    Navigation(navController = navController)
+                    Navigation()
                 },
 
                 ) {

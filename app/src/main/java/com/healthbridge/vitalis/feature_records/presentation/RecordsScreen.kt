@@ -1,34 +1,37 @@
 package com.healthbridge.vitalis.feature_records.presentation
 
 import android.annotation.SuppressLint
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
+import android.os.Bundle
+import android.os.PersistableBundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import com.healthbridge.vitalis.commons.components.Navigation
-import com.healthbridge.vitalis.commons.navigation.BottomNavGraph
 import com.healthbridge.vitalis.ui.theme.VitalisTheme
 
-@Preview
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Composable
-fun RecordsScreen() {
-    val navController = rememberNavController()
 
-    VitalisTheme {
-        Scaffold(
-            topBar = {
+class RecordsScreen(): ComponentActivity() {
 
-            },
-            bottomBar = {
-                        Navigation(navController = navController)
-            },
-        ) {
+    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onCreate(savedInstanceState, persistentState)
+        setContent{
 
-            BottomNavGraph(navController = navController)
-            Text(text = "Records")
+            VitalisTheme {
+                Scaffold(
+                    topBar = {
+
+                    },
+                    bottomBar = {
+                        Navigation()
+                    },
+                ) {
+                    Text(text = "Records")
+                }
+
+            }
         }
-
     }
+
 }
