@@ -1,14 +1,14 @@
 package com.healthbridge.vitalis.feature_auth.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.healthbridge.vitalis.R
+import com.healthbridge.vitalis.feature_home.presentation.MainActivity
 import com.healthbridge.vitalis.ui.theme.VitalisTheme
 
 class LoginScreen : ComponentActivity() {
@@ -57,7 +57,7 @@ class LoginScreen : ComponentActivity() {
         listener = FirebaseAuth.AuthStateListener { p0 ->
             val user = p0.currentUser
             if (user != null) {
-
+                startActivity(Intent(this, MainActivity::class.java))
 
             } else {
                 // User is signed out

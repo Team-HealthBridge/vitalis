@@ -1,6 +1,7 @@
 package com.healthbridge.vitalis.feature_home.presentation
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,15 +14,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.healthbridge.vitalis.R
 import com.healthbridge.vitalis.commons.components.Navigation
 import com.healthbridge.vitalis.commons.navigation.BottomNavGraph
+import com.healthbridge.vitalis.feature_bot.presentation.ChatScreen
 import com.healthbridge.vitalis.feature_home.presentation.components.HealthBits
 import com.healthbridge.vitalis.feature_home.presentation.components.InformationCard
 import com.healthbridge.vitalis.ui.theme.VitalisTheme
@@ -65,7 +65,7 @@ class MainActivity : ComponentActivity() {
                     floatingActionButton = {
                         FloatingActionButton(
                             onClick = {
-                                navController.navigate("chat")
+                                startActivity(Intent(this, ChatScreen::class.java))
                             } ,
                             modifier = Modifier
                                 .size(100.dp)
