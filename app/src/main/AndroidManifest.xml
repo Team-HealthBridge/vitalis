@@ -17,6 +17,11 @@
         android:theme="@style/Theme.Vitalis"
         tools:targetApi="31">
         <activity
+            android:name=".feature_home.presentation.MainActivity"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Vitalis" />
+        <activity
             android:name=".feature_communities.presentation.CommunitiesScreen"
             android:exported="false"
             android:label="@string/title_activity_communities_screen"
@@ -25,12 +30,12 @@
             android:name=".feature_bot.presentation.ChatScreen"
             android:exported="true"
             android:label="@string/title_activity_chat_screen"
-            android:theme="@style/Theme.Vitalis"/>
+            android:theme="@style/Theme.Vitalis" />
         <activity
-            android:name=".feature_home.presentation.MainActivity"
+            android:name=".feature_auth.ui.LoginScreen"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Vitalis">
+            android:label="Login Screen"
+            android:theme="@style/Auth">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
