@@ -81,6 +81,9 @@ dependencies {
     // Coroutine Lifecycle Scopes
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
 
+    // Navigation
+    implementation("androidx.navigation:navigation-compose:$nav_version")
+
 }
 
 kapt {

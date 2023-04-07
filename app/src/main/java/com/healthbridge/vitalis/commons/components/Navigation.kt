@@ -1,42 +1,58 @@
 package com.healthbridge.vitalis.commons.components
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.healthbridge.vitalis.R
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.healthbridge.vitalis.commons.navigation.BottomNavItem
 
 
-@Preview(showBackground = true)
 @Composable
-fun Navigation() {
-    val (selectedTab, setSelectedTab) = remember { mutableStateOf(0) }
-    val items = listOf("Home", "Communities", "Records")
-    val icons = listOf(
-        R.drawable.ic_outline_home_24,
-        R.drawable.communities,
-        R.drawable.files
+fun Navigation(
+    navController: NavHostController,
+) {
+    val items = listOf(
+        BottomNavItem.Home,
+        BottomNavItem.Communities,
+        BottomNavItem.Records,
     )
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surface,
     ) {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute  = remember(navBackStackEntry) {
+            navBackStackEntry?.destination?.route
+        }
         items.forEachIndexed { index, item ->
             NavigationBarItem(
                 icon = {
                     Icon(
-                        painter = painterResource(id = icons[index]),
+                        painter = painterResource(id = item.icon),
                         contentDescription = null,
-                        modifier = Modifier.padding(bottom = 20.dp)
+                        modifier = Modifier.size(24.dp)
                     )
                 },
-                label = { Text(item, color = MaterialTheme.colorScheme.primary) },
-                selected = selectedTab == index,
-                onClick = { setSelectedTab(index) },
+                selected = currentRoute == item.route,
+                onClick = {
+                    if (currentRoute != item.route) {
+                        println("Current route is $currentRoute")
+                        println("Item route is ${item.route}")
+                        navController.navigate(item.route) {
+                            launchSingleTop = true
+                        }
+
+                    }
+                },
                 modifier = Modifier.padding(8.dp)
             )
         }

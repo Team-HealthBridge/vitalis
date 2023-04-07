@@ -20,14 +20,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.isContainer
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.healthbridge.vitalis.R
 import com.healthbridge.vitalis.commons.components.Navigation
+import com.healthbridge.vitalis.commons.navigation.BottomNavGraph
 import com.healthbridge.vitalis.feature_communities.presentation.components.CommunityPost
 import com.healthbridge.vitalis.feature_home.presentation.components.HealthBits
 import com.healthbridge.vitalis.ui.theme.VitalisTheme
@@ -45,6 +49,7 @@ class CommunitiesScreen : ComponentActivity() {
             val active = remember {
                 mutableStateOf(false)
             }
+            val navController = rememberNavController()
 
             VitalisTheme {
                 Scaffold(
@@ -83,8 +88,12 @@ class CommunitiesScreen : ComponentActivity() {
                             )
                         }
                     },
+                    bottomBar = {
+                        Navigation(navController = navController)
+                    },
 
                     ) {
+                    BottomNavGraph(navController = navController)
                     Column(
                         modifier = Modifier
                             .paddingFromBaseline(top = 100.dp)
@@ -183,6 +192,8 @@ fun DefaultPreview() {
         mutableStateOf(false)
     }
 
+    val navController = rememberNavController()
+
     VitalisTheme {
         Scaffold(
             topBar = {
@@ -219,6 +230,9 @@ fun DefaultPreview() {
                         contentDescription = ""
                     )
                 }
+            },
+            bottomBar = {
+                Navigation(navController = navController)
             },
 
             ) {
@@ -296,7 +310,6 @@ fun DefaultPreview() {
                         HealthBits()
                     }
                 }
-                Navigation()
             }
 
         }
