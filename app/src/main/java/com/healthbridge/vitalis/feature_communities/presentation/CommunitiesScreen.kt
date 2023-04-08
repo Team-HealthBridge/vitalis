@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -26,17 +24,27 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.lifecycle.ViewModelProvider
 import com.healthbridge.vitalis.R
 import com.healthbridge.vitalis.commons.components.Navigation
+import com.healthbridge.vitalis.feature_communities.data.repository.CommunityRepository
 import com.healthbridge.vitalis.feature_communities.presentation.components.CommunityPost
+import com.healthbridge.vitalis.feature_communities.presentation.viewmodels.CommunityViewModel
+import com.healthbridge.vitalis.feature_communities.presentation.viewmodels.CommunityViewModelFactory
 import com.healthbridge.vitalis.feature_home.presentation.components.HealthBits
 import com.healthbridge.vitalis.ui.theme.VitalisTheme
 
 
-class CommunitiesScreen : ComponentActivity() {
+class CommunitiesScreen() : ComponentActivity() {
+
     @OptIn(ExperimentalMaterial3Api::class)
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val communityRepository = CommunityRepository()
+        val factory = CommunityViewModelFactory(communityRepository)
+        val communityViewModel = ViewModelProvider(this, factory).get(CommunityViewModel::class.java)
+
         super.onCreate(savedInstanceState)
         setContent {
             val text = remember {
@@ -45,6 +53,8 @@ class CommunitiesScreen : ComponentActivity() {
             val active = remember {
                 mutableStateOf(false)
             }
+
+
             VitalisTheme {
                 Scaffold(
                     topBar = {
@@ -90,6 +100,7 @@ class CommunitiesScreen : ComponentActivity() {
                     Column(
                         modifier = Modifier
                             .paddingFromBaseline(top = 100.dp)
+                            .verticalScroll(rememberScrollState())
                     ) {
                         Box(
                             Modifier
@@ -109,8 +120,18 @@ class CommunitiesScreen : ComponentActivity() {
                                     active.value = it
                                 },
                                 placeholder = { Text("Search for a topic") },
-                                leadingIcon = { Icon(Icons.Default.Menu, contentDescription = null) },
-                                trailingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                                leadingIcon = {
+                                    Icon(
+                                        Icons.Default.Menu,
+                                        contentDescription = null
+                                    )
+                                },
+                                trailingIcon = {
+                                    Icon(
+                                        Icons.Default.Search,
+                                        contentDescription = null
+                                    )
+                                },
                             ) {
                                 LazyColumn(
                                     modifier = Modifier.fillMaxWidth(),
@@ -156,12 +177,26 @@ class CommunitiesScreen : ComponentActivity() {
                         LazyRow(
                             modifier = Modifier
                                 .padding(horizontal = 20.dp)
-                                .padding(bottom = 20.dp)
-                        ) {
-                            items(5) {
-                                HealthBits()
+                                .padding(bottom = 20.dp),
+
+                            content = {
+                                val size = communityViewModel.communitiesResponse.value.size
+                                items(size) {
+                                    communityViewModel.communitiesResponse.value[it].let { community ->
+                                        community.profilePicture?.let { it1 ->
+                                            Box(modifier = Modifier.padding(10.dp)){
+                                                HealthBits(
+                                                    image = it1,
+                                                    title = community.name,
+                                                    description = community.bio
+                                                )
+                                            }
+                                        }
+                                    }
+
+                                }
                             }
-                        }
+                        )
 
                     }
 
@@ -170,7 +205,6 @@ class CommunitiesScreen : ComponentActivity() {
         }
     }
 }
-
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -275,6 +309,7 @@ fun DefaultPreview() {
                                 )
                             }
                         }
+                        Navigation()
                     }
                 }
 
@@ -298,7 +333,16 @@ fun DefaultPreview() {
                         .padding(bottom = 20.dp)
                 ) {
                     items(5) {
-                        HealthBits()
+                        Box(
+                            modifier = Modifier.padding(10.dp)
+                        ) {
+                            HealthBits(
+                                image = "https://images.unsplash.com/photo-1487300001871-12053913095d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
+                                title = "Mental Health",
+                                description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                            )
+
+                        }
                     }
                 }
             }
