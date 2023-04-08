@@ -113,7 +113,11 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 items(10) {
                                     Box(modifier = Modifier.padding(10.dp)) { // this adds padding around each item
-                                        HealthBits()
+                                        HealthBits(
+                                            image = "https://images.unsplash.com/photo-1604480132736-44c188fe4d20?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2790&q=80",
+                                            title = "Mental Health",
+                                            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                                        )
                                     }
                                 }
                             }
@@ -208,7 +212,11 @@ class MainActivity : ComponentActivity() {
                         ) {
                             items(10) {
                                 Box(modifier = Modifier.padding(10.dp)) { // this adds padding around each item
-                                    HealthBits()
+                                    HealthBits(
+                                        image = "https://images.unsplash.com/photo-1604480132736-44c188fe4d20?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2790&q=80",
+                                        title = "Mental Health",
+                                        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                                    )
                                 }
                             }
                         }
