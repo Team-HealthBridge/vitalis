@@ -1,6 +1,5 @@
 package com.healthbridge.vitalis.feature_communities.data.models
 
-import org.w3c.dom.Comment
 
 data class Community(
     val name: String = "",
@@ -17,9 +16,10 @@ data class Post(
     val body: String? = "",
     val postImage: String? = null,
     val author: Member = Member(),
-    val comments: List<Comment> = emptyList()
+    val comments: List<Comment> = emptyList(),
+    val likes: Int = 0
 ) {
-    constructor() : this("", "", null, Member(), emptyList())
+    constructor() : this("", "", null, Member(), emptyList(), 0)
 }
 
 data class Member(
@@ -29,5 +29,14 @@ data class Member(
     val communities: List<Community> = emptyList()
 ) {
     constructor() : this("", "", null, emptyList())
+}
+
+data class Comment(
+    val body: String = "",
+    val author: Member = Member(),
+    val replies: List<Comment> = emptyList(),
+    val likes: Int = 0
+) {
+    constructor() : this("", Member(), emptyList(), 0)
 }
 
