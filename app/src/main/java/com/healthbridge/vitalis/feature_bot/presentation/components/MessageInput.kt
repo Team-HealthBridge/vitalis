@@ -5,10 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -52,10 +49,16 @@ fun MessageInput(onSend: (String) -> Unit) {
             )
         },
         trailingIcon = {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_baseline_send_24),
-                contentDescription = "Send"
-            )
+            IconButton(onClick = {
+                focusManager.clearFocus()
+                onSend(value.value)
+                value.value = ""
+            }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_baseline_send_24),
+                    contentDescription = "Send"
+                )
+            }
         },
         modifier = Modifier
             .fillMaxWidth()
