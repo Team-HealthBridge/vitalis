@@ -1,7 +1,9 @@
 package com.healthbridge.vitalis.feature_communities.presentation.components
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
@@ -15,12 +17,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.healthbridge.vitalis.R
 import com.healthbridge.vitalis.feature_communities.data.models.Comment
 import com.healthbridge.vitalis.feature_communities.data.models.Post
-
+import com.healthbridge.vitalis.feature_communities.presentation.SpecificCommunityScreen
 
 
 @Composable
@@ -30,6 +33,7 @@ fun CommunityPost(
 ) {
 
     val liked = remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     Box(modifier = Modifier.fillMaxWidth()) {
         Column {
@@ -59,6 +63,13 @@ fun CommunityPost(
                     modifier = Modifier
                         .padding(8.dp)
                         .align(Alignment.CenterVertically)
+                        .clickable(
+                            onClick = {
+                                startActivity(context, Intent(context, SpecificCommunityScreen::class.java), null)
+                            }
+                        )
+
+
                 )
 
             }
@@ -133,7 +144,6 @@ fun CommunityPost(
                         .align(Alignment.CenterVertically)
                 )
             }
-            println(comment)
             // Comments
             Row(
                 modifier = Modifier
