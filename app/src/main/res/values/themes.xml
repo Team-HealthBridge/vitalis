@@ -2,6 +2,7 @@
 <resources>
 
     <style name="Theme.Vitalis" parent="android:Theme.Material.Light.NoActionBar" />
+
     <style name="Auth" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>

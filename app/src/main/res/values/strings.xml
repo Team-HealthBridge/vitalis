@@ -3,4 +3,5 @@
     <string name="title_activity_chat_screen">ChatScreen</string>
     <string name="title_activity_communities_screen">CommunitiesScreen</string>
     <string name="title_activity_login_screen">LoginScreen</string>
+    <string name="title_activity_specific_community_screen">specific_community_screen</string>
 </resources>
