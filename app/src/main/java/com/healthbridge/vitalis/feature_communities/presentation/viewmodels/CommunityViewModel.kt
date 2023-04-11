@@ -16,7 +16,12 @@ class CommunityViewModel constructor(communityRepository: CommunityRepository) :
 
     init {
         communityRepository.getCommunities()
-        communityRepository.getPost()
+        communityRepository.getPost("Sleep")
+    }
+
+    fun getPost(string: String){
+        val communityRepository = CommunityRepository()
+        communityRepository.getPost(string)
     }
 
 }
