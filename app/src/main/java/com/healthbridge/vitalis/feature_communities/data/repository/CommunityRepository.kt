@@ -42,8 +42,8 @@ class CommunityRepository {
         }
     }
 
-    fun getPost(){
-        communitiesDocumentRef.document("Sleep").get().addOnSuccessListener { documentSnapshot ->
+    fun getPost(string: String){
+        communitiesDocumentRef.document(string).get().addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot.exists()) {
                 val community = documentSnapshot.toObject(Community::class.java)
                 if (community != null) {
