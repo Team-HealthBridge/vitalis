@@ -18,7 +18,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.healthbridge.vitalis.R
-import com.healthbridge.vitalis.commons.components.Navigation
 import com.healthbridge.vitalis.feature_bot.presentation.components.CreateMessageBubbles
 import com.healthbridge.vitalis.feature_bot.presentation.components.MessageInput
 import com.healthbridge.vitalis.feature_bot.presentation.viewmodels.ChatViewModel
@@ -61,7 +60,7 @@ class ChatScreen : ComponentActivity() {
                         )
                     },
                     bottomBar = {
-                        Navigation()
+//                        Navigation()
                     },
                     ) {
                     Box(
@@ -118,7 +117,7 @@ fun DefaultPreview2() {
                 )
             },
             bottomBar = {
-                Navigation()
+//                Navigation()
             },
         ) {
             Box(

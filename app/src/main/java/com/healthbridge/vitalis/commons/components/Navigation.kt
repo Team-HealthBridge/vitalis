@@ -8,6 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -27,7 +29,7 @@ fun Navigation(
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surface,
     ) {
-
+        val (selectedTab, setSelectedTab) = remember { mutableStateOf(0) }
         NavigationBarItem(
             icon = {
                 Icon(
@@ -36,8 +38,9 @@ fun Navigation(
                     modifier = Modifier.size(24.dp)
                 )
             },
-            selected = true,
+            selected = selectedTab == 0,
             onClick = {
+                setSelectedTab(0)
                 startActivity(context, Intent(context, MainActivity::class.java), null)
             },
             modifier = Modifier.padding(8.dp)
@@ -50,8 +53,9 @@ fun Navigation(
                     modifier = Modifier.size(24.dp)
                 )
             },
-            selected = false,
+            selected = selectedTab == 1 ,
             onClick = {
+                setSelectedTab(1)
                 startActivity(context, Intent(context, CommunitiesScreen::class.java), null)
             },
             modifier = Modifier.padding(8.dp)
@@ -64,8 +68,9 @@ fun Navigation(
                     modifier = Modifier.size(24.dp)
                 )
             },
-            selected = true,
+            selected = selectedTab == 2,
             onClick = {
+                setSelectedTab(2)
                 startActivity(context, Intent(context, RecordsScreen::class.java), null)
             },
             modifier = Modifier.padding(8.dp)
