@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.google.firebase.firestore.FirebaseFirestore
 import com.healthbridge.vitalis.feature_communities.data.models.Community
 import com.healthbridge.vitalis.feature_communities.data.models.Member
+import com.healthbridge.vitalis.feature_communities.data.models.Post
 
 class CommunityRepository {
 
@@ -13,6 +14,7 @@ class CommunityRepository {
     private val communitiesDocumentRef = firestoreInstance.collection("communities")
 
     val allComunities: MutableState<List<Community>> = mutableStateOf(emptyList())
+    val post : MutableState<List<Post>> = mutableStateOf(emptyList())
 
     val member1 = Member("Member 1", "Member 1 Bio", "profilePicture", listOf())
     val member2 = Member("Member 2", "Member 2 Bio", "profilePicture", listOf())
@@ -39,4 +41,16 @@ class CommunityRepository {
             }
         }
     }
+
+    fun getPost(){
+        communitiesDocumentRef.document("Sleep").get().addOnSuccessListener { documentSnapshot ->
+            if (documentSnapshot.exists()) {
+                val community = documentSnapshot.toObject(Community::class.java)
+                if (community != null) {
+                    post.value = community.posts
+                }
+            }
+        }
+    }
+
 }
