@@ -13,4 +13,6 @@
     <string name="welcome_message_4">Well, not literally. Find people with similar interests in health topics and get to ask questions, comment and share experiences!</string>
     <string name="skip">Skip</string>
     <string name="get_started">Get Started</string>
+    <string name="title_activity_specific_community_screen">Specific Community Screen</string>
+    <string name="title_activity_new_post_screen">Create Post</string>
 </resources>
