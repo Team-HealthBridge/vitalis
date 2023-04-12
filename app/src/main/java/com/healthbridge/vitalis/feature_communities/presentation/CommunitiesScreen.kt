@@ -1,17 +1,19 @@
 package com.healthbridge.vitalis.feature_communities.presentation
 
-import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,6 +27,7 @@ import androidx.compose.ui.zIndex
 import androidx.lifecycle.ViewModelProvider
 import com.healthbridge.vitalis.R
 import com.healthbridge.vitalis.commons.components.Navigation
+import com.healthbridge.vitalis.feature_bot.presentation.ChatScreen
 import com.healthbridge.vitalis.feature_communities.data.repository.CommunityRepository
 import com.healthbridge.vitalis.feature_communities.presentation.components.CommunityPost
 import com.healthbridge.vitalis.feature_communities.presentation.viewmodels.CommunityViewModel
@@ -36,7 +39,6 @@ import com.healthbridge.vitalis.ui.theme.VitalisTheme
 class CommunitiesScreen() : ComponentActivity() {
 
     @OptIn(ExperimentalMaterial3Api::class)
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val communityRepository = CommunityRepository()
@@ -82,11 +84,17 @@ class CommunitiesScreen() : ComponentActivity() {
                     },
                     floatingActionButton = {
                         FloatingActionButton(
-                            onClick = { /* fab click handler */ }
+                            onClick = {
+                                startActivity(Intent(this, ChatScreen::class.java))
+                            },
+                            shape = CircleShape, // this makes the button round
+
                         ) {
                             Image(
                                 painter = painterResource(id = R.drawable.chatwidget),
-                                contentDescription = ""
+                                contentDescription = "",
+                                modifier = Modifier
+                                    .size(50.dp)
                             )
                         }
                     },
@@ -97,7 +105,7 @@ class CommunitiesScreen() : ComponentActivity() {
                     ) {
                     Column(
                         modifier = Modifier
-                            .paddingFromBaseline(top = 100.dp)
+                            .padding(it)
                             .verticalScroll(rememberScrollState())
                     ) {
                         Box(
@@ -131,29 +139,7 @@ class CommunitiesScreen() : ComponentActivity() {
                                     )
                                 },
                             ) {
-                                LazyColumn(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    contentPadding = PaddingValues(16.dp),
-                                    verticalArrangement = Arrangement.spacedBy(4.dp)
-                                ) {
-                                    items(4) { idx ->
-                                        val resultText = "Suggestion $idx"
-                                        ListItem(
-                                            headlineContent = { Text(resultText) },
-                                            supportingContent = { Text("Additional info") },
-                                            leadingContent = {
-                                                Icon(
-                                                    Icons.Filled.Star,
-                                                    contentDescription = null
-                                                )
-                                            },
-                                            modifier = Modifier.clickable {
-                                                text.value = resultText
-                                                active.value = false
-                                            }
-                                        )
-                                    }
-                                }
+
                             }
                         }
 
