@@ -17,7 +17,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.healthbridge.vitalis.R
@@ -29,13 +28,22 @@ import com.healthbridge.vitalis.feature_communities.presentation.SpecificCommuni
 @Composable
 fun CommunityPost(
     post: Post,
-    comment: Comment
+    comment: Comment?
 ) {
 
     val liked = remember { mutableStateOf(false) }
     val context = LocalContext.current
 
-    Box(modifier = Modifier.fillMaxWidth()) {
+    Box(
+        modifier = Modifier.fillMaxWidth()
+            .clickable(
+                onClick = {
+                    val intent = Intent(context, SpecificCommunityScreen::class.java)
+                    intent.putExtra("community", "Sleep")
+                    context.startActivity(intent)
+                }
+            )
+    ) {
         Column {
             Row(
                 modifier = Modifier
@@ -63,12 +71,6 @@ fun CommunityPost(
                     modifier = Modifier
                         .padding(8.dp)
                         .align(Alignment.CenterVertically)
-                        .clickable(
-                            onClick = {
-                                startActivity(context, Intent(context, SpecificCommunityScreen::class.java), null)
-                            }
-                        )
-
 
                 )
 
@@ -181,11 +183,19 @@ fun CommunityPost(
                             shape = MaterialTheme.shapes.medium
                         ).align(Alignment.CenterVertically)
                 ) {
-                    Text(
-                        text = comment.body,
-                        style = MaterialTheme.typography.labelLarge,
-                        modifier = Modifier.padding(10.dp).align(Alignment.CenterHorizontally)
-                    )
+                    if(comment != null){
+                        Text(
+                            text = comment.body,
+                            style = MaterialTheme.typography.labelLarge,
+                            modifier = Modifier.padding(10.dp).align(Alignment.CenterHorizontally)
+                        )
+                    } else {
+                        Text(
+                            text = "No comments yet",
+                            style = MaterialTheme.typography.labelLarge,
+                            modifier = Modifier.padding(10.dp).align(Alignment.CenterHorizontally)
+                        )
+                    }
 
                 }
             }
