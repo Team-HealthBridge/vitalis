@@ -5,17 +5,17 @@ data class Community(
     val name: String = "",
     val bio: String = "",
     val profilePicture : String? = null,
-    val members: List<Member> = emptyList(),
-    val posts : List<Post> = emptyList()
+    var members: List<Member> = emptyList(),
+    var posts : List<Post> = emptyList()
 ) {
     constructor() : this("", "", null, emptyList(), emptyList())
 }
 
 data class Post(
     val title: String? = "",
-    val body: String? = "",
+    var body: String? = "",
     val postImage: String? = null,
-    val author: Member = Member(),
+    var author: Member = Member(),
     val comments: List<Comment> = emptyList(),
     val likes: Int = 0
 ) {
@@ -23,12 +23,13 @@ data class Post(
 }
 
 data class Member(
+    var id : String = "",
     val name: String = "",
     val bio: String = "",
     val profilePicture : String? = null,
-    val communities: List<Community> = emptyList()
+    var communities: List<Community> = emptyList()
 ) {
-    constructor() : this("", "", null, emptyList())
+    constructor() : this("", "", "",null, emptyList())
 }
 
 data class Comment(
