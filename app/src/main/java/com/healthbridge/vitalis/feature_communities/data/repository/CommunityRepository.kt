@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.healthbridge.vitalis.feature_communities.data.models.Community
 import com.healthbridge.vitalis.feature_communities.data.models.Member
 import com.healthbridge.vitalis.feature_communities.data.models.Post
+import kotlinx.coroutines.tasks.await
 
 class CommunityRepository {
 
@@ -16,8 +17,9 @@ class CommunityRepository {
     val allComunities: MutableState<List<Community>> = mutableStateOf(emptyList())
     val post : MutableState<List<Post>> = mutableStateOf(emptyList())
 
-    val member1 = Member("Member 1", "Member 1 Bio", "profilePicture", listOf())
-    val member2 = Member("Member 2", "Member 2 Bio", "profilePicture", listOf())
+
+    val member1 = Member("1","Member 1", "Member 1 Bio", "profilePicture", listOf())
+    val member2 = Member("2","Member 2", "Member 2 Bio", "profilePicture", listOf())
 
 
     val community = Community("Sleep", "Sleep is the only way the body heals", "profilePicture", listOf(member1, member2))
@@ -48,6 +50,62 @@ class CommunityRepository {
                 val community = documentSnapshot.toObject(Community::class.java)
                 if (community != null) {
                     post.value = community.posts
+                }
+            }
+        }
+    }
+
+    fun followCommunity(communityName: String, member: Member){
+        communitiesDocumentRef.document(communityName).get().addOnSuccessListener() { documentSnapshot ->
+            if (documentSnapshot.exists()) {
+                val community = documentSnapshot.toObject(Community::class.java)
+                if (community != null) {
+                    var members = community.members
+                    if (members.contains(member)){
+                        members.minus(member)
+                        communitiesDocumentRef.document(community.name).update("members", members)
+                        member.communities.minus(community)
+                    } else {
+                        members = members.plus(member)
+                        communitiesDocumentRef.document(community.name).update("members", members)
+                        member.communities.plus(community)
+                    }
+                }
+            }
+        }
+    }
+
+    suspend fun isCommunityMember(communityName: String, member: Member): Boolean{
+
+        val documentSnapshot = communitiesDocumentRef.document(communityName).get().await()
+
+        if (documentSnapshot != null) {
+            if (documentSnapshot.exists()) {
+                val community = documentSnapshot.toObject(Community::class.java)
+                if (community != null) {
+                    val members = community.members
+                    for (eachMember in members){
+                        if (eachMember.id == member.id){
+                            return true
+                        }
+                    }
+                }
+            }
+        }
+
+        return false
+    }
+
+    suspend fun addPost(communityName: String, post: Post){
+        val documentSnapshot = communitiesDocumentRef.document(communityName).get().await()
+
+        if (documentSnapshot != null) {
+            if (documentSnapshot.exists()) {
+                val community = documentSnapshot.toObject(Community::class.java)
+                if (community != null) {
+                    var posts = community.posts
+                    posts = posts.plus(post)
+                    communitiesDocumentRef.document(community.name).update("posts", posts)
                 }
             }
         }
