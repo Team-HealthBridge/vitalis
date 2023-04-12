@@ -4,4 +4,5 @@
     <string name="title_activity_communities_screen">CommunitiesScreen</string>
     <string name="title_activity_login_screen">LoginScreen</string>
     <string name="title_activity_specific_community_screen">specific_community_screen</string>
+    <string name="title_activity_new_post_screen">new_post_screen</string>
 </resources>
