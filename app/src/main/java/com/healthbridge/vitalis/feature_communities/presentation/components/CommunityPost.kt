@@ -1,7 +1,9 @@
 package com.healthbridge.vitalis.feature_communities.presentation.components
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
@@ -11,19 +13,37 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.healthbridge.vitalis.R
+import com.healthbridge.vitalis.feature_communities.data.models.Comment
+import com.healthbridge.vitalis.feature_communities.data.models.Post
+import com.healthbridge.vitalis.feature_communities.presentation.SpecificCommunityScreen
 
 
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun CommunityPost() {
+fun CommunityPost(
+    post: Post,
+    comment: Comment?
+) {
 
     val liked = remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
-    Box(modifier = Modifier.fillMaxWidth()) {
+    Box(
+        modifier = Modifier.fillMaxWidth()
+            .clickable(
+                onClick = {
+                    val intent = Intent(context, SpecificCommunityScreen::class.java)
+                    intent.putExtra("community", "Sleep")
+                    context.startActivity(intent)
+                }
+            )
+    ) {
         Column {
             Row(
                 modifier = Modifier
@@ -32,7 +52,7 @@ fun CommunityPost() {
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.sleep),
-                    contentDescription = "Community Post Image",
+                    contentDescription = "Community Post Profile Image",
                     modifier = Modifier
                         .size(60.dp)
                         .padding(8.dp)
@@ -51,16 +71,24 @@ fun CommunityPost() {
                     modifier = Modifier
                         .padding(8.dp)
                         .align(Alignment.CenterVertically)
+
                 )
 
             }
-            Image(
-                painter = painterResource(id = R.drawable.post),
-                contentDescription = "Community Post Image",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-            )
+            if (post.postImage != null){
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(post.postImage)
+                        .crossfade(true)
+                        .build(),
+                    placeholder = painterResource(id = R.drawable.coming_soon),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                )
+            }
             // Interactions Row (Like, Comment, Share)
             Row(
                 modifier = Modifier
@@ -92,7 +120,7 @@ fun CommunityPost() {
                     }
                 }
                 Text(
-                    text = "5.3K",
+                    text = post.likes.toString(),
                     style = MaterialTheme.typography.labelLarge,
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )
@@ -105,7 +133,7 @@ fun CommunityPost() {
                         .align(Alignment.CenterVertically)
                 )
                 Text(
-                    text = "1.7K",
+                    text = post.comments.size.toString(),
                     style = MaterialTheme.typography.labelLarge,
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )
@@ -118,21 +146,36 @@ fun CommunityPost() {
                         .align(Alignment.CenterVertically)
                 )
             }
-
             // Comments
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 30.dp, vertical = 5.dp)
+                    .padding(horizontal = 30.dp, vertical = 0.dp)
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.member_profile_image),
-                    contentDescription = "Community Post Image",
-                    modifier = Modifier
-                        .size(60.dp)
-                        .padding(8.dp)
-                        .align(Alignment.CenterVertically)
-                )
+//                if (comment.author.profilePicture != null || comment.author.profilePicture != ""){
+//                    AsyncImage(
+//                        model = ImageRequest.Builder(LocalContext.current)
+//                            .data(comment.author.profilePicture)
+//                            .crossfade(true)
+//                            .build(),
+//                        placeholder = painterResource(id = R.drawable.ic_baseline_emoji_emotions_24),
+//                        contentDescription = null,
+//                        contentScale = ContentScale.Crop,
+//                        modifier = Modifier
+//                            .size(40.dp)
+//                            .padding(8.dp)
+//                            .align(Alignment.CenterVertically)
+//                    )
+//                } else {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_baseline_emoji_emotions_24),
+                        contentDescription = "Community Post Image",
+                        modifier = Modifier
+                            .size(40.dp)
+                            .padding(8.dp)
+                            .align(Alignment.CenterVertically)
+                    )
+//                }
                 Column(
                     modifier = Modifier
                         .background(
@@ -140,11 +183,19 @@ fun CommunityPost() {
                             shape = MaterialTheme.shapes.medium
                         ).align(Alignment.CenterVertically)
                 ) {
-                    Text(
-                        text = "I am a permanently exhausted pigeon",
-                        style = MaterialTheme.typography.labelLarge,
-                        modifier = Modifier.padding(10.dp).align(Alignment.CenterHorizontally)
-                    )
+                    if(comment != null){
+                        Text(
+                            text = comment.body,
+                            style = MaterialTheme.typography.labelLarge,
+                            modifier = Modifier.padding(10.dp).align(Alignment.CenterHorizontally)
+                        )
+                    } else {
+                        Text(
+                            text = "No comments yet",
+                            style = MaterialTheme.typography.labelLarge,
+                            modifier = Modifier.padding(10.dp).align(Alignment.CenterHorizontally)
+                        )
+                    }
 
                 }
             }

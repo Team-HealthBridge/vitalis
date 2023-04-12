@@ -3,17 +3,14 @@
     <string name="title_activity_chat_screen">ChatScreen</string>
     <string name="title_activity_communities_screen">CommunitiesScreen</string>
     <string name="title_activity_login_screen">LoginScreen</string>
-
     <string name="title">Welcome to Vitalis</string>
     <string name="title2">Need health information?</string>
     <string name="title3">Chat with Vitalis</string>
     <string name="title4">Find your people</string>
-
     <string name="welcome_message">Hello and welcome to Vitalis. Vitalis is your personal health assistant that helps you stay informed about health, find hospitals, manage your health records and so much more.</string>
     <string name="welcome_message2">We provide you with health information to help keep yourself and your loved one’s healthy</string>
     <string name="welcome_message_3">We provide you with health information to help keep yourself and your loved one’s healthy</string>
     <string name="welcome_message_4">Well, not literally. Find people with similar interests in health topics and get to ask questions, comment and share experiences!</string>
     <string name="skip">Skip</string>
     <string name="get_started">Get Started</string>
-
 </resources>

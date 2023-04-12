@@ -13,13 +13,17 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.firebase.auth.FirebaseAuth
 import com.healthbridge.vitalis.R
 import com.healthbridge.vitalis.commons.components.Navigation
+import com.healthbridge.vitalis.feature_auth.ui.LoginScreen
 import com.healthbridge.vitalis.feature_bot.presentation.ChatScreen
 import com.healthbridge.vitalis.feature_home.presentation.components.HealthBits
 import com.healthbridge.vitalis.feature_home.presentation.components.InformationCard
@@ -29,6 +33,9 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
+        val auth = FirebaseAuth.getInstance()
+        val context = this
+
         super.onCreate(savedInstanceState)
         setContent {
             VitalisTheme {
@@ -49,11 +56,33 @@ class MainActivity : ComponentActivity() {
                                 )
                             },
                             actions = {
-                                IconButton(onClick = { /*TODO*/ }) {
+                                val expanded = remember { mutableStateOf(false) }
+                                IconButton(onClick = { expanded.value = true }) {
                                     Icon(
                                         painterResource(id = R.drawable.ic_baseline_menu_24),
                                         contentDescription = "Menu"
                                     )
+                                }
+                                DropdownMenu(
+                                    expanded = expanded.value ,
+                                    onDismissRequest = { expanded.value = false },
+                                ){
+                                    DropdownMenuItem(
+                                        onClick = {
+                                            auth.signOut()
+                                            val intent = Intent(context, LoginScreen::class.java)
+                                            startActivity(intent)
+
+                                        },
+                                        text = { Text(text = "Log Out") },
+                                        leadingIcon = {
+                                            Icon(
+                                                painter = painterResource(id = R.drawable.ic_baseline_arrow_outward_24),
+                                                contentDescription = null
+                                            )
+                                        }
+                                    )
+
                                 }
                             }
                         )
@@ -113,7 +142,11 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 items(10) {
                                     Box(modifier = Modifier.padding(10.dp)) { // this adds padding around each item
-                                        HealthBits()
+                                        HealthBits(
+                                            image = "https://images.unsplash.com/photo-1604480132736-44c188fe4d20?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2790&q=80",
+                                            title = "Mental Health",
+                                            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                                        )
                                     }
                                 }
                             }
@@ -208,7 +241,11 @@ class MainActivity : ComponentActivity() {
                         ) {
                             items(10) {
                                 Box(modifier = Modifier.padding(10.dp)) { // this adds padding around each item
-                                    HealthBits()
+                                    HealthBits(
+                                        image = "https://images.unsplash.com/photo-1604480132736-44c188fe4d20?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2790&q=80",
+                                        title = "Mental Health",
+                                        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                                    )
                                 }
                             }
                         }
