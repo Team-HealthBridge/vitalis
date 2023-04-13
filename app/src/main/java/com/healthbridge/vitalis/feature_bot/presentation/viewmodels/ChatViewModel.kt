@@ -1,7 +1,9 @@
 package com.healthbridge.vitalis.feature_bot.presentation.viewmodels
 
 import androidx.compose.runtime.MutableState
-import androidx.lifecycle.*
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.healthbridge.vitalis.feature_bot.data.remote.model.UserActivity
 import com.healthbridge.vitalis.feature_bot.data.remote.model.UserFrom
 import com.healthbridge.vitalis.feature_bot.data.remote.responses.Activity
@@ -15,7 +17,6 @@ class ChatViewModel @Inject constructor(private val chatRepository: ChatReposito
 
 
     val botResponse: MutableState<List<Activity>> = chatRepository.activityState
-    val botChoices: MutableState<List<String>> = chatRepository.choicesState
 
     fun sendUserInput(input: String) {
         viewModelScope.launch {
