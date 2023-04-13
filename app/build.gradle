@@ -110,8 +110,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.3.0")
 
 
-    // Google Sign In
-//    implementation 'com.google.android.gms:play-services-auth:21.0.1'
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
 
 }
 

@@ -95,7 +95,7 @@ fun Onboarding() {
                     .align(Alignment.End)
                     .padding(end = 16.dp, top = 16.dp)
                     .clickable {
-                        val intent = Intent(context, LoginScreen::class.java)
+                        val intent = Intent(context, ChoiceScreen::class.java)
                         context.startActivity(intent)
                     }
             )
@@ -172,7 +172,7 @@ fun Onboarding() {
                         .width(width = 150.dp)
                         .height(height = 56.dp),
                     onClick = {
-                        val intent = Intent(context, LoginScreen::class.java)
+                        val intent = Intent(context, ChoiceScreen::class.java)
                         context.startActivity(intent)
                     }
                 ) {

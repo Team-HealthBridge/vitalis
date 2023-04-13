@@ -42,7 +42,17 @@
             android:label="@string/title_activity_chat_screen"
             android:theme="@style/Theme.Vitalis" />
         <activity
-            android:name=".feature_auth.ui.LoginScreen"
+            android:name=".feature_auth.ui.SignInScreen"
+            android:exported="true"
+            android:label="@string/title_activity_login_screen"
+            android:theme="@style/Theme.Vitalis" />
+        <activity
+            android:name=".feature_auth.ui.SignUpScreen"
+            android:exported="true"
+            android:label="@string/title_activity_login_screen"
+            android:theme="@style/Theme.Vitalis" />
+        <activity
+            android:name=".feature_auth.ui.ChoiceScreen"
             android:exported="true"
             android:label="@string/title_activity_login_screen"
             android:theme="@style/Theme.Vitalis" />
