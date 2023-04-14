@@ -52,6 +52,11 @@
             android:label="@string/title_activity_login_screen"
             android:theme="@style/Theme.Vitalis" />
         <activity
+            android:name=".feature_auth.ui.AuthActivity"
+            android:exported="true"
+            android:label="@string/title_activity_login_screen"
+            android:theme="@style/Theme.Vitalis" />
+        <activity
             android:name=".feature_auth.ui.ChoiceScreen"
             android:exported="true"
             android:label="@string/title_activity_login_screen"

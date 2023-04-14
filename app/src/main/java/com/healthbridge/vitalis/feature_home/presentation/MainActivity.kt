@@ -20,10 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.firebase.auth.FirebaseAuth
 import com.healthbridge.vitalis.R
 import com.healthbridge.vitalis.commons.components.Navigation
-import com.healthbridge.vitalis.feature_auth.ui.LoginScreen
+import com.healthbridge.vitalis.feature_auth.ui.AuthActivity
+import com.healthbridge.vitalis.feature_auth.ui.AuthRepository
+import com.healthbridge.vitalis.feature_auth.ui.AuthViewModel
 import com.healthbridge.vitalis.feature_bot.presentation.ChatScreen
 import com.healthbridge.vitalis.feature_home.presentation.components.HealthBits
 import com.healthbridge.vitalis.feature_home.presentation.components.InformationCard
@@ -33,8 +34,10 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
-        val auth = FirebaseAuth.getInstance()
         val context = this
+
+        val authRepository = AuthRepository()
+        val viewModel = AuthViewModel(authRepository)
 
         super.onCreate(savedInstanceState)
         setContent {
@@ -69,8 +72,8 @@ class MainActivity : ComponentActivity() {
                                 ){
                                     DropdownMenuItem(
                                         onClick = {
-                                            auth.signOut()
-                                            val intent = Intent(context, LoginScreen::class.java)
+                                            viewModel.firebaseSignOut()
+                                            val intent = Intent(context, AuthActivity::class.java)
                                             startActivity(intent)
 
                                         },

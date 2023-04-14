@@ -1,5 +1,6 @@
 package com.healthbridge.vitalis.feature_auth.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,13 +19,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.healthbridge.vitalis.R
 import com.healthbridge.vitalis.ui.theme.VitalisTheme
@@ -34,7 +35,10 @@ class SignUpScreen: ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             VitalisTheme {
-                SignUp()
+
+                val authRepository = AuthRepository()
+                val viewModel = AuthViewModel(authRepository)
+                SignUp(viewModel)
             }
         }
     }
@@ -42,9 +46,8 @@ class SignUpScreen: ComponentActivity() {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
 @Composable
-fun SignUp() {
+fun SignUp(viewModel: AuthViewModel) {
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -60,6 +63,8 @@ fun SignUp() {
         val confirmPassword = remember { mutableStateOf(TextFieldValue()) }
 
         val passwordVisible = rememberSaveable { mutableStateOf(false) }
+
+        val context = LocalContext.current
 
 
 
@@ -159,13 +164,15 @@ fun SignUp() {
 
                 Button(
                     onClick = {
-                        TODO()
+                        viewModel.firebaseSignUpWithEmailAndPassword(email.value.text, password.value.text, confirmPassword.value.text)
+                        val intent = Intent(context, AuthActivity::class.java)
+                        context.startActivity(intent)
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 80.dp, end = 80.dp, top = 20.dp, bottom = 20.dp),
                 ) {
-                    Text("Sign in")
+                    Text("Sign Up")
                 }
 
                 Text(
