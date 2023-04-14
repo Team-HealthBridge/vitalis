@@ -1,6 +1,11 @@
 package com.healthbridge.vitalis.feature_auth.ui
 
+import android.content.Intent
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.progressSemantics
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -20,12 +26,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.healthbridge.vitalis.R
+import com.healthbridge.vitalis.ui.theme.VitalisTheme
+
+
+class OnboardScreen: ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+           VitalisTheme() {
+                Onboarding()
+           }
+        }
+    }
+}
 
 @Preview
 @Composable
 fun Onboarding() {
 
     var pageNumber by remember { mutableStateOf(1) }
+    val context = LocalContext.current
 
     val titleResource = when(pageNumber) {
         1 -> R.string.title
@@ -74,8 +94,10 @@ fun Onboarding() {
                 modifier = Modifier
                     .align(Alignment.End)
                     .padding(end = 16.dp, top = 16.dp)
-
-
+                    .clickable {
+                        val intent = Intent(context, AuthActivity::class.java)
+                        context.startActivity(intent)
+                    }
             )
             Spacer(
                 modifier = Modifier
@@ -150,7 +172,8 @@ fun Onboarding() {
                         .width(width = 150.dp)
                         .height(height = 56.dp),
                     onClick = {
-                        //TODO: Navigate to login screen
+                        val intent = Intent(context, AuthActivity::class.java)
+                        context.startActivity(intent)
                     }
                 ) {
 

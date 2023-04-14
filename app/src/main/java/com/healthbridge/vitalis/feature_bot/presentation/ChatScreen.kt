@@ -72,8 +72,7 @@ class ChatScreen : ComponentActivity() {
                         ) {
                             Column {
                                 val activities = chatViewModel.botResponse.value
-                                val options = chatViewModel.botChoices.value
-                                CreateMessageBubbles(activities = activities, choices = options)
+                                CreateMessageBubbles(activities = activities, chatViewModel::sendUserInput)
                             }
                             MessageInput(chatViewModel::sendUserInput)
                         }
