@@ -2,6 +2,8 @@ package com.healthbridge.vitalis.feature_bot.data.repository
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import com.healthbridge.vitalis.feature_auth.ui.AuthRepository
+import com.healthbridge.vitalis.feature_auth.ui.AuthViewModel
 import com.healthbridge.vitalis.feature_bot.data.remote.ApiService
 import com.healthbridge.vitalis.feature_bot.data.remote.model.RequestToken
 import com.healthbridge.vitalis.feature_bot.data.remote.model.User
@@ -18,13 +20,18 @@ class ChatRepository @Inject constructor(private val api: ApiService) {
     lateinit var conversationId:String
     private var token:String? = null
 
+    val authRepository = AuthRepository()
+    val viewModel = AuthViewModel(authRepository)
+
+    val user = viewModel.currentUser
+
 
     private suspend fun getToken(): String {
         if (this.token == null) {
             val requestToken = RequestToken(
                 user = User(
-                    id = "user2",
-                    name = "HealthBridge"
+                    id = user?.uid ?: "1",
+                    name = user?.displayName ?: "Unnamed User"
                 )
             )
             this.token = api.getToken(Constants.TOKEN, requestToken).token

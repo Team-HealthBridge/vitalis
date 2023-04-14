@@ -39,6 +39,8 @@ class MainActivity : ComponentActivity() {
         val authRepository = AuthRepository()
         val viewModel = AuthViewModel(authRepository)
 
+        val user = viewModel.currentUser
+
         super.onCreate(savedInstanceState)
         setContent {
             VitalisTheme {
@@ -47,7 +49,7 @@ class MainActivity : ComponentActivity() {
                         TopAppBar(
                             title = {
                                 Text(
-                                    "HELLO ILHAN",
+                                    "HELLO ${user?.displayName?.uppercase()}",
                                     color = MaterialTheme.colorScheme.primary,
                                 )
                             },

@@ -24,15 +24,19 @@ class AuthViewModel @Inject constructor(
 
     val isSignedIn = mutableStateOf(false)
 
-    fun firebaseSignUpWithEmailAndPassword(email: String, password: String, password2: String): Boolean{
-        return if (validateForm(email, password, password2)) {
-            viewModelScope.launch {
-                authRepository.firebaseSignUpWithEmailAndPassword(email, password)
+    fun firebaseSignUpWithEmailAndPassword(email: String, password: String, password2: String, name: String): Boolean{
+        try {
+            return if (validateForm(email, password, password2)) {
+                viewModelScope.launch {
+                    authRepository.firebaseSignUpWithEmailAndPassword(email, password, name)
+                }
+                true
+            } else {
+                false
             }
-            true
-        } else {
-            Exception("Invalid Form")
-            false
+        } catch (e: Exception) {
+            println("Exception $e")
+            throw e
         }
     }
 

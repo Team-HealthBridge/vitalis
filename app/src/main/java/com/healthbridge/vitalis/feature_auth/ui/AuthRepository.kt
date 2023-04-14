@@ -8,6 +8,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.healthbridge.vitalis.R
 import dagger.Module
 import dagger.Provides
@@ -52,10 +53,19 @@ class AuthRepository @Inject constructor(
     @Provides
     suspend fun firebaseSignUpWithEmailAndPassword(
         email: String,
-        password: String
+        password: String,
+        name: String
     ): Boolean{
         try {
-            firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+            firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .continueWith { task ->
+                    if (!task.isSuccessful) {
+                        throw task.exception!!
+                    }
+                    val user = firebaseAuth.currentUser
+                    val profileUpdates = userProfileChangeRequest { displayName = name }
+                    user?.updateProfile(profileUpdates)
+                }.await()
             return true
         } catch (e: Exception) {
             println("Exception $e")
