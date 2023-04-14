@@ -164,7 +164,7 @@ fun SignUp(viewModel: AuthViewModel) {
 
                 Button(
                     onClick = {
-                        viewModel.firebaseSignUpWithEmailAndPassword(email.value.text, password.value.text, confirmPassword.value.text)
+                        viewModel.firebaseSignUpWithEmailAndPassword(email= email.value.text, password = password.value.text, password2 = confirmPassword.value.text, name = userName.value.text)
                         val intent = Intent(context, AuthActivity::class.java)
                         context.startActivity(intent)
                     },
