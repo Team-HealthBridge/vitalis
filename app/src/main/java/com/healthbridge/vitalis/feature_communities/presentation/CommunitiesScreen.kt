@@ -103,7 +103,6 @@ class CommunitiesScreen() : ComponentActivity() {
                     },
                     bottomBar = {
                         Navigation()
-                        Nav
                     },
 
                     ) {

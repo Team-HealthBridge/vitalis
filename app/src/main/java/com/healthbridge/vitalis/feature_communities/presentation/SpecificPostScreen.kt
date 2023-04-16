@@ -120,14 +120,15 @@ class SpecificPostScreen: ComponentActivity() {
                                     items(post.comments?.size ?: 0) { index ->
                                         Column(
                                             modifier = Modifier
-                                                .padding(20.dp)
+                                                .padding(horizontal = 20.dp, vertical = 8.dp)
+                                                .background(
+                                                    color = MaterialTheme.colorScheme.primaryContainer
+                                                )
                                                 .align(Alignment.End)
                                         ) {
                                             Text(
                                                 text = post.comments?.get(index)?.body.toString(),
-                                                modifier = Modifier.padding(20.dp).background(
-                                                    color = MaterialTheme.colorScheme.primaryContainer
-                                                ).align(Alignment.CenterHorizontally)
+                                                modifier = Modifier.padding(20.dp).align(Alignment.CenterHorizontally)
                                             )
 
                                         }
