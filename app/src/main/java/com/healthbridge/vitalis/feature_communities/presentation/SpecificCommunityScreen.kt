@@ -138,15 +138,28 @@ class SpecificCommunityScreen : ComponentActivity() {
                                 val singlePost = communityViewModel.postResponse.value
                                 if(singlePost.isNotEmpty()){
                                     println("Single Post: $singlePost")
-                                    singlePost.forEach {
+                                    singlePost.forEachIndexed { index, it ->
                                         println("Single Post: $it")
                                         if(it.comments.isNotEmpty() && it.comments != null){
                                             item{
-                                            CommunityPost(post = it, comment = it.comments[0])
+                                            CommunityPost(
+                                                post = it,
+                                                comment = it.comments[0],
+                                                onClick = {
+                                                    val intent = Intent(context, SpecificPostScreen::class.java)
+                                                    intent.putExtra("community", communityName)
+                                                    intent.putExtra("post", it.body)
+                                                    context.startActivity(intent)
+                                                }
+                                            )
                                             }
                                         } else {
                                             item{
-                                                CommunityPost(post = it, comment = null)
+                                                CommunityPost(post = it, comment = null, onClick = {
+                                                    val intent = Intent(context, SpecificPostScreen::class.java)
+                                                    intent.putExtra("community", communityName)
+                                                    context.startActivity(intent)
+                                                })
                                             }
                                         }
 

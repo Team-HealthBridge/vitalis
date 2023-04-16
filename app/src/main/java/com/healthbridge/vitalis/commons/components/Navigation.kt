@@ -23,6 +23,7 @@ import com.healthbridge.vitalis.feature_records.presentation.RecordsScreen
 
 @Composable
 fun Navigation(
+
 ) {
     val context = LocalContext.current
     NavigationBar(

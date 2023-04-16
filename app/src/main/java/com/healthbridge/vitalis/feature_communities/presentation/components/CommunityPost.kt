@@ -1,6 +1,5 @@
 package com.healthbridge.vitalis.feature_communities.presentation.components
 
-import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,25 +21,24 @@ import coil.request.ImageRequest
 import com.healthbridge.vitalis.R
 import com.healthbridge.vitalis.feature_communities.data.models.Comment
 import com.healthbridge.vitalis.feature_communities.data.models.Post
-import com.healthbridge.vitalis.feature_communities.presentation.SpecificCommunityScreen
 
 
 @Composable
 fun CommunityPost(
     post: Post,
-    comment: Comment?
+    comment: Comment?,
+    onClick: () -> Unit
 ) {
 
     val liked = remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     Box(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .clickable(
                 onClick = {
-                    val intent = Intent(context, SpecificCommunityScreen::class.java)
-                    intent.putExtra("community", "Sleep")
-                    context.startActivity(intent)
+                    onClick()
                 }
             )
     ) {
@@ -75,7 +73,7 @@ fun CommunityPost(
                 )
 
             }
-            if (post.postImage != null){
+            if (post.postImage != null && post.postImage.isNotEmpty()){
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(post.postImage)
@@ -88,6 +86,17 @@ fun CommunityPost(
                         .fillMaxWidth()
                         .height(200.dp)
                 )
+            } else{
+                post.body?.let {
+                    println("Title: $it")
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.labelLarge,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                    )
+                }
             }
             // Interactions Row (Like, Comment, Share)
             Row(
@@ -181,19 +190,24 @@ fun CommunityPost(
                         .background(
                             color = MaterialTheme.colorScheme.primaryContainer,
                             shape = MaterialTheme.shapes.medium
-                        ).align(Alignment.CenterVertically)
+                        )
+                        .align(Alignment.CenterVertically)
                 ) {
                     if(comment != null){
                         Text(
                             text = comment.body,
                             style = MaterialTheme.typography.labelLarge,
-                            modifier = Modifier.padding(10.dp).align(Alignment.CenterHorizontally)
+                            modifier = Modifier
+                                .padding(10.dp)
+                                .align(Alignment.CenterHorizontally)
                         )
                     } else {
                         Text(
                             text = "No comments yet",
                             style = MaterialTheme.typography.labelLarge,
-                            modifier = Modifier.padding(10.dp).align(Alignment.CenterHorizontally)
+                            modifier = Modifier
+                                .padding(10.dp)
+                                .align(Alignment.CenterHorizontally)
                         )
                     }
 

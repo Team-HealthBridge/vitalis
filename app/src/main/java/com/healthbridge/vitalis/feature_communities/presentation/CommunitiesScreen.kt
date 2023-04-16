@@ -19,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.isContainer
 import androidx.compose.ui.semantics.semantics
@@ -53,6 +54,8 @@ class CommunitiesScreen() : ComponentActivity() {
             val active = remember {
                 mutableStateOf(false)
             }
+
+            val context = LocalContext.current
 
 
             VitalisTheme {
@@ -100,6 +103,7 @@ class CommunitiesScreen() : ComponentActivity() {
                     },
                     bottomBar = {
                         Navigation()
+                        Nav
                     },
 
                     ) {
@@ -154,7 +158,15 @@ class CommunitiesScreen() : ComponentActivity() {
                         val singlePost = communityViewModel.postResponse.value
                         if(singlePost.isNotEmpty()){
                             val comment = singlePost[0].comments
-                           CommunityPost(post = singlePost[0], comment = comment[0])
+                           CommunityPost(
+                               post = singlePost[0],
+                               comment = comment[0],
+                               onClick = {
+                                   val intent = Intent(context, SpecificCommunityScreen::class.java)
+                                   intent.putExtra("community", "Sleep")
+                                   context.startActivity(intent)
+                               }
+                           )
                         }
 
                         Text(

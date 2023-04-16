@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.healthbridge.vitalis.feature_communities.data.models.Comment
 import com.healthbridge.vitalis.feature_communities.data.models.Community
 import com.healthbridge.vitalis.feature_communities.data.models.Member
 import com.healthbridge.vitalis.feature_communities.data.models.Post
@@ -17,6 +18,8 @@ class CommunityViewModel constructor(communityRepository: CommunityRepository) :
     val communitiesResponse: MutableState<List<Community>> = communityRepository.allComunities
     val postResponse: MutableState<List<Post>> = communityRepository.post
     val isMember : MutableState<Boolean> = mutableStateOf(false)
+    val postComments : MutableState<List<Comment>> = mutableStateOf(emptyList())
+    val post : MutableState<Post> = mutableStateOf(Post("","","", "", Member("", "", "", ""),  emptyList()))
 
 
     init {
@@ -47,6 +50,31 @@ class CommunityViewModel constructor(communityRepository: CommunityRepository) :
             communityRepository.addPost(communityName, post)
         }
     }
+
+    fun addComment(communityName: String, post: Post, comment: Comment){
+        viewModelScope.launch {
+            val communityRepository = CommunityRepository()
+            communityRepository.addComment(communityName, post, comment)
+        }
+    }
+
+    fun getComments(communityName: String, post: Post){
+        viewModelScope.launch {
+            val communityRepository = CommunityRepository()
+            postComments.value = communityRepository.getPostComments(communityName, post)
+        }
+    }
+
+    fun getPostById(communityName: String, postBody: String){
+        viewModelScope.launch {
+            val communityRepository = CommunityRepository()
+            post.value = communityRepository.getPostByBody(communityName, postBody)!!
+        }
+    }
+
+
+
+
 }
 
 class CommunityViewModelFactory(private val repository: CommunityRepository) : ViewModelProvider.Factory {

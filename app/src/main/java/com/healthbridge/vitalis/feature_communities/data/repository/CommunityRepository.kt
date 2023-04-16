@@ -3,6 +3,7 @@ package com.healthbridge.vitalis.feature_communities.data.repository
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.google.firebase.firestore.FirebaseFirestore
+import com.healthbridge.vitalis.feature_communities.data.models.Comment
 import com.healthbridge.vitalis.feature_communities.data.models.Community
 import com.healthbridge.vitalis.feature_communities.data.models.Member
 import com.healthbridge.vitalis.feature_communities.data.models.Post
@@ -109,6 +110,63 @@ class CommunityRepository {
                 }
             }
         }
+    }
+
+    suspend fun addComment(communityName: String, post: Post, comment: Comment){
+        val documentSnapshot = communitiesDocumentRef.document(communityName).get().await()
+
+        if (documentSnapshot != null) {
+            if (documentSnapshot.exists()) {
+                val community = documentSnapshot.toObject(Community::class.java)
+                if (community != null) {
+                    var posts = community.posts
+                    for (eachPost in posts){
+                        if (eachPost.body == post.body){
+                            eachPost.comments = eachPost.comments.plus(comment)
+                        }
+                    }
+                    communitiesDocumentRef.document(community.name).update("posts", posts)
+                }
+            }
+        }
+    }
+
+    suspend fun getPostComments(communityName: String, post: Post): List<Comment>{
+        val documentSnapshot = communitiesDocumentRef.document(communityName).get().await()
+
+        if (documentSnapshot != null) {
+            if (documentSnapshot.exists()) {
+                val community = documentSnapshot.toObject(Community::class.java)
+                if (community != null) {
+                    var posts = community.posts
+                    for (eachPost in posts){
+                        if (eachPost.id == post.id){
+                            return eachPost.comments
+                        }
+                    }
+                }
+            }
+        }
+        return emptyList()
+    }
+
+    suspend fun getPostByBody(communityName: String, postBody: String): Post?{
+        val documentSnapshot = communitiesDocumentRef.document(communityName).get().await()
+
+        if (documentSnapshot != null) {
+            if (documentSnapshot.exists()) {
+                val community = documentSnapshot.toObject(Community::class.java)
+                if (community != null) {
+                    var posts = community.posts
+                    for (eachPost in posts){
+                        if (eachPost.body == postBody){
+                            return eachPost
+                        }
+                    }
+                }
+            }
+        }
+        return null
     }
 
 }

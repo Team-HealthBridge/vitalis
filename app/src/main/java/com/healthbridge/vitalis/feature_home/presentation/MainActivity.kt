@@ -16,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.healthbridge.vitalis.R
@@ -57,9 +58,18 @@ class MainActivity : ComponentActivity() {
                             },
                             Modifier.background(color = MaterialTheme.colorScheme.tertiary),
                             navigationIcon = {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_baseline_arrow_back_ios_24),
-                                    contentDescription = ""
+                                val purple = MaterialTheme.colorScheme.primaryContainer
+                                Text(
+                                    text = "${user?.displayName?.first()}",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    modifier = Modifier
+                                        .padding(16.dp)
+                                        .drawBehind {
+                                            drawCircle(
+                                                color = purple,
+                                                radius = this.size.maxDimension
+                                            )
+                                        },
                                 )
                             },
                             actions = {

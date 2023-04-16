@@ -97,6 +97,11 @@
             android:label="@string/title_activity_login_screen"
             android:theme="@style/Theme.Vitalis" />
         <activity
+            android:name=".feature_communities.presentation.SpecificPostScreen"
+            android:exported="true"
+            android:label="@string/title_activity_login_screen"
+            android:theme="@style/Theme.Vitalis" />
+        <activity
             android:name=".feature_auth.ui.OnboardScreen"
             android:exported="true"
             android:label="@string/app_name"
