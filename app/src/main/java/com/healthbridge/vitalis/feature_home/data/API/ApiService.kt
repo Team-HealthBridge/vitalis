@@ -12,14 +12,14 @@ interface ApiService {
     suspend fun getHealthBits(): HealthBits
 
     // Get Categories
-    @GET("categories")
+    @GET("health-bits/categories")
     suspend fun getCategories(): List<String>
 
     // Get Bits by Category
     @GET("health-bits")
     suspend fun getHealthBitsByCategory(
         @Query("category") category: String
-    ): List<HealthBits>
+    ): HealthBits
 
     // Get Events
     @GET("health-events")

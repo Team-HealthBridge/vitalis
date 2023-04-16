@@ -12,6 +12,7 @@ class HealthBitsRepository {
 
     val healthBits: MutableState<List<Content>> = mutableStateOf(listOf())
     val event: MutableState<EventsResponse> = mutableStateOf(EventsResponse("","",0,"","","",""))
+    val category: MutableState<List<String>> = mutableStateOf(listOf())
 
 
     suspend fun getHealthBits() {
@@ -19,9 +20,12 @@ class HealthBitsRepository {
         healthBits.value = returnedHealthBits.content
     }
 
-    suspend fun getCategories() = api.getCategories()
+    suspend fun getCategories(){
+        val returnedCategories = api.getCategories()
+        category.value = returnedCategories
+    }
 
-    suspend fun getHealthBitsByCategory(category: String) = api.getHealthBitsByCategory(category)
+    suspend fun getHealthBitsByCategory(category: String) = api.getHealthBitsByCategory(category).content
 
     suspend fun getEvents() {
         val returnedEvents = api.getEvents()
