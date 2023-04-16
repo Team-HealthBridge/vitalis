@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
@@ -29,7 +30,7 @@ fun UserMessageBubble(
     Column(
         modifier = Modifier
             .background(
-                color = MaterialTheme.colorScheme.primaryContainer,
+                color = MaterialTheme.colorScheme.secondary,
                 shape = MaterialTheme.shapes.medium
             )
             .padding(8.dp)
@@ -72,7 +73,7 @@ fun BotMessageBubble(message: String?, time: String) {
     Box(
         modifier = Modifier
             .background(
-                color = MaterialTheme.colorScheme.secondary,
+                color = MaterialTheme.colorScheme.primary,
                 shape = MaterialTheme.shapes.medium
             )
             .wrapContentHeight()
@@ -103,7 +104,7 @@ fun CreateMessageBubbles(activities: List<Activity>, onSend: (String) -> Unit) {
             .padding(8.dp),
         content = {
             activities.forEach {
-                if (it.from.name != "health-bridge-bot") {
+                if (it.from.name != "vitalis") {
                     item {
                         Column(
                             modifier = Modifier
