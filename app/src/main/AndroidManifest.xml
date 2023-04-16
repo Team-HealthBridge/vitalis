@@ -32,6 +32,41 @@
             android:label="@string/app_name"
             android:theme="@style/Theme.Vitalis" />
         <activity
+            android:name=".feature_records.presentation.RecordsScreen"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Vitalis" />
+        <activity
+            android:name=".feature_records.presentation.HealthRecordsScreen"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Vitalis" />
+        <activity
+            android:name=".feature_records.presentation.NewHealthRecordsScreen"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Vitalis" />
+        <activity
+            android:name=".feature_records.presentation.MeasurementsScreen"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Vitalis" />
+        <activity
+            android:name=".feature_records.presentation.VitalsScreen"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Vitalis" />
+        <activity
+            android:name=".feature_records.presentation.NewVitalsScreen"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Vitalis" />
+        <activity
+            android:name=".feature_home.presentation.MoreHealthBitsScreen"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Vitalis" />
+        <activity
             android:name=".feature_communities.presentation.CommunitiesScreen"
             android:exported="false"
             android:label="@string/title_activity_communities_screen"
@@ -65,7 +100,7 @@
             android:name=".feature_auth.ui.OnboardScreen"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Auth">
+            android:theme="@style/Theme.Vitalis">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

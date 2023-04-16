@@ -45,7 +45,7 @@ fun UserMessageBubble(
 }
 
 @Composable
-fun BotMessageBubble(message: String, time: String) {
+fun BotMessageBubble(message: String?, time: String) {
     Row {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
@@ -81,10 +81,12 @@ fun BotMessageBubble(message: String, time: String) {
             modifier = Modifier
                 .padding(8.dp)
         ) {
-            Text(
-                text = message,
-                color = MaterialTheme.colorScheme.onPrimary,
-            )
+            if (message != null) {
+                Text(
+                    text = message,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                )
+            }
         }
     }
 }
@@ -101,7 +103,7 @@ fun CreateMessageBubbles(activities: List<Activity>, onSend: (String) -> Unit) {
             .padding(8.dp),
         content = {
             activities.forEach {
-                if (it.from.name != "vitalis") {
+                if (it.from.name != "health-bridge-bot") {
                     item {
                         Column(
                             modifier = Modifier

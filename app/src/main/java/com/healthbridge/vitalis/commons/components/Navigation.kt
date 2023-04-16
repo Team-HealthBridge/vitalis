@@ -21,7 +21,6 @@ import com.healthbridge.vitalis.feature_home.presentation.MainActivity
 import com.healthbridge.vitalis.feature_records.presentation.RecordsScreen
 
 
-
 @Composable
 fun Navigation(
 ) {

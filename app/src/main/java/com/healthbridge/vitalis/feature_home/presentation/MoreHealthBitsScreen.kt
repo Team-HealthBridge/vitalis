@@ -1,6 +1,7 @@
 package com.healthbridge.vitalis.feature_home.presentation
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,14 +9,20 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.*
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.healthbridge.vitalis.R
@@ -26,11 +33,11 @@ import com.healthbridge.vitalis.feature_auth.ui.AuthViewModel
 import com.healthbridge.vitalis.feature_bot.presentation.ChatScreen
 import com.healthbridge.vitalis.feature_home.data.repository.HealthBitsRepository
 import com.healthbridge.vitalis.feature_home.presentation.components.HealthBits
-import com.healthbridge.vitalis.feature_home.presentation.components.InformationCard
 import com.healthbridge.vitalis.feature_home.presentation.viewmodels.HealthBitsViewModel
 import com.healthbridge.vitalis.ui.theme.VitalisTheme
 
-class MainActivity : ComponentActivity() {
+class MoreHealthBitsScreen : ComponentActivity() {
+
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         val context = this
@@ -38,20 +45,17 @@ class MainActivity : ComponentActivity() {
         val authRepository = AuthRepository()
         val viewModel = AuthViewModel(authRepository)
 
-        val user = viewModel.currentUser
-
         val healthBitsRepository = HealthBitsRepository()
         val healthBitsViewModel = HealthBitsViewModel(healthBitsRepository)
-
         super.onCreate(savedInstanceState)
         setContent {
             VitalisTheme {
                 Scaffold(
                     topBar = {
-                        TopAppBar(
+                        CenterAlignedTopAppBar(
                             title = {
                                 Text(
-                                    "HELLO ${user?.displayName?.uppercase()}",
+                                    "Health Bits",
                                     color = MaterialTheme.colorScheme.primary,
                                 )
                             },
@@ -66,7 +70,7 @@ class MainActivity : ComponentActivity() {
                                 val expanded = remember { mutableStateOf(false) }
                                 IconButton(onClick = { expanded.value = true }) {
                                     Icon(
-                                        painterResource(id = R.drawable.ic_baseline_menu_24),
+                                        painterResource(id = R.drawable.ic_baseline_more_vert_24),
                                         contentDescription = "Menu"
                                     )
                                 }
@@ -93,6 +97,10 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                         )
+
+                    },
+                    bottomBar = {
+                        Navigation()
                     },
                     floatingActionButton = {
                         FloatingActionButton(
@@ -109,54 +117,78 @@ class MainActivity : ComponentActivity() {
                                     .size(50.dp)
                             )
                         }
-                    },
-                    bottomBar = {
-                        Navigation()
-                    },
 
-                    ) { innerPadding ->
+                    },
+                ) { innerPadding ->
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(innerPadding)
                     ) {
-                        val event = healthBitsViewModel.event.value
-                        InformationCard(
-                            image = event.pictureUrl,
-                            title = event.title,
-                            description = event.description,
-                            url = event.learnMoreUrl,
-                            modifier = Modifier
+                        Box(
+                            Modifier
                                 .fillMaxWidth()
-                                .padding(20.dp)
-                                .align(Alignment.CenterHorizontally)
-                        )
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
+                                .height(130.dp)
                         ) {
-                            Text(
-                                text = "Health Bits",
-                                modifier = Modifier.padding(10.dp),
-                                style = MaterialTheme.typography.headlineSmall
+                            val cellConfiguration =
+                                if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                                    StaggeredGridCells.Adaptive(minSize = 30.dp)
+                                } else {
+                                    StaggeredGridCells.Fixed(2)
+                                }
+
+                            LazyHorizontalStaggeredGrid(
+                                rows = cellConfiguration,
+                                contentPadding = PaddingValues(16.dp),
+                                verticalArrangement = Arrangement.spacedBy(16.dp),
+                                horizontalItemSpacing = 16.dp,
+                                content = {
+                                    val size = healthBitsViewModel.categories.value.size
+                                    items(size) {
+                                        healthBitsViewModel.categories.value[it].let { category ->
+                                            val selected: MutableState<Boolean> =
+                                                remember { mutableStateOf(false) }
+                                            val color = Color(0xFFCFBCFF)
+                                            FilterChip(
+                                                selected = selected.value,
+                                                onClick = {
+                                                    selected.value = !selected.value
+                                                    if (selected.value) {
+                                                        healthBitsViewModel.getHealthBitsByCategory(
+                                                            category
+                                                        )
+                                                    }
+                                                },
+                                                label = { Text(category) },
+                                                modifier = Modifier.height(30.dp),
+                                                colors = FilterChipDefaults.filterChipColors(
+                                                    selectedContainerColor = color,
+                                                ),
+                                                leadingIcon = if (selected.value) {
+                                                    {
+                                                        Icon(
+                                                            imageVector = Icons.Filled.Done,
+                                                            contentDescription = null,
+                                                            modifier = Modifier.size(
+                                                                FilterChipDefaults.IconSize
+                                                            )
+                                                        )
+                                                    }
+                                                } else {
+                                                    null
+                                                }
+                                            )
+                                        }
+                                    }
+                                }
                             )
-                            OutlinedButton(
-                                onClick = {
-                                          val intent = Intent(context, MoreHealthBitsScreen::class.java)
-                                            context.startActivity(intent)
-                                },
-                                modifier = Modifier.align(Alignment.CenterVertically).padding(end = 10.dp),
-                            ) {
-                                Text(text = "See More")
-                            }
                         }
                         LazyVerticalStaggeredGrid(
                             columns = StaggeredGridCells.Fixed(2),
                             contentPadding = PaddingValues(10.dp), // this adds padding around the whole grid
                             modifier = Modifier.fillMaxHeight(0.9f)
                         ) {
-                            healthBitsViewModel.healthBits.value.forEach {
+                            healthBitsViewModel.healthBitsByCategory.value.forEach {
                                 item {
                                     Box(modifier = Modifier.padding(10.dp)) { // this adds padding around each item
                                         HealthBits(
@@ -174,5 +206,4 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 
